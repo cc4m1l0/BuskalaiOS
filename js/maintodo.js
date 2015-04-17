@@ -13,7 +13,12 @@ function MainViewModel() {
     var self = this;
     // Editable data
     self.items = ko.observableArray([]);
-
+    //cargamos datos locales
+    var dataLoaded = this.cargarLocal();
+    if (dataLoaded)
+        alert("cargó");
+    else
+        alert("nocargó");
     //obtenemos la preferencia del usuario
     var preferenciausuario = window.localStorage.getItem('preferencia_usuario');
     //envio el query para obtener datos de los establecimientos
@@ -23,6 +28,7 @@ function MainViewModel() {
         dataType: "xml",
         success: function (result) {
             //llenarTodos(result);
+            self.items.removeAll();
             $(result).find("cliente").each(function () {
                 var id, nombre, direccion, tipo, urlcarpeta, imagen;
                 id = $(this).find("id_cliente").text();
@@ -33,12 +39,49 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, self);
                 self.items.push(est);
+                self.guardarLocal();
             });
         },
         error: function (objeto, quepaso, otroobj) {
             alert("Pasó lo siguiente: " + quepaso);
         }
     });
+
+    this.guardarLocal = function () 
+    {
+	    var jsData = ko.toJS(self.items);
+	    var data = [];
+
+	    jsData.forEach((function (item) {
+		    var itemData = {
+                idEstablecimiento: item.idEstablecimiento, 
+                nombreEstablecimiento: item.nombreEstablecimiento,
+                direccionEstablecimiento: item.direccionEstablecimiento,
+                tipoEstablecimiento: item.tipoEstablecimiento, 
+                imagenEstablecimiento: item.imagenEstablecimiento
+		    };
+		    data.push(itemData);
+	    }).bind(self));
+
+	    window.localStorage.setItem("todositems", JSON.stringify(data));
+    }
+
+    this.cargarLocal = function (data) 
+    {
+		var jsonItems = window.localStorage.getItem("todositems");
+		if (!jsonItems) {
+		    return false;
+		}
+        
+        self.items.removeAll();
+		var jsData = JSON.parse(jsonItems);
+		jsData.forEach((function (jsItem) {
+		    var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, self);
+		    self.items.push(item);
+		}).bind(self));
+
+		return true;
+	}
 }
 
 function llenarTodos(data) 
