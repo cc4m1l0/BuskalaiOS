@@ -14,11 +14,24 @@ function MainViewModel() {
     // Editable data
     self.items = ko.observableArray([]);
     //cargamos datos locales
-    /*var dataLoaded = this.cargarLocal();
-    if (dataLoaded)
-        alert("cargó");
-    else
-        alert("nocargó");*/
+
+    self.cargarLocal = function () 
+    {
+        var jsonItems = window.localStorage.getItem("todositems");
+        if (!jsonItems) {
+            return;
+        }
+        
+        self.items.removeAll();
+        var jsData = JSON.parse(jsonItems);
+        jsData.forEach((function (jsItem) {
+            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, self);
+            self.items.push(item);
+        }).bind(self));
+
+        return;
+    }
+    self.cargarLocal();
     //obtenemos la preferencia del usuario
     var preferenciausuario = window.localStorage.getItem('preferencia_usuario');
     //envio el query para obtener datos de los establecimientos
@@ -62,26 +75,9 @@ function MainViewModel() {
 		    };
 		    data.push(itemData);
 	    }).bind(self));
-
 	    window.localStorage.setItem("todositems", JSON.stringify(data));
+	   //alert("guardado");
     }
-
-    self.cargarLocal = function (data) 
-    {
-		var jsonItems = window.localStorage.getItem("todositems");
-		if (!jsonItems) {
-		    return false;
-		}
-        
-        self.items.removeAll();
-		var jsData = JSON.parse(jsonItems);
-		jsData.forEach((function (jsItem) {
-		    var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, self);
-		    self.items.push(item);
-		}).bind(self));
-
-		return true;
-	}
 }
 
 function llenarTodos(data) 

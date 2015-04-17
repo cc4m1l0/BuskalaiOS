@@ -14,6 +14,7 @@ var mainView = myApp.addView('.view-main', {
 
 // Callbacks to run specific code for specific pages, for example for About page:
 myApp.onPageInit('registro', function (page) {
+    mainView.hideNavbar();
     mainView.params.swipeBackPage = false;
     mainView.params.preloadPreviousPage = false;
     $$('.registro-fb').on('click', function () {
@@ -113,14 +114,16 @@ myApp.onPageInit('preferencias', function (page) {
 
 myApp.onPageInit('main', function (page) {
     
-    var mainViewModel = new MainViewModel();
-    ko.applyBindings(mainViewModel);
+    /*var mainViewModel = new MainViewModel();
+    ko.applyBindings(mainViewModel);*/
 
     $$('.logout-fb').on('click', function () {
         facebookConnectPlugin.logout(
 		function (response) //success
 		{
-		    alert(JSON.stringify(response))
+		    //alert(JSON.stringify(response))
+            window.localStorage.removeItem('id_usuario');
+            window.localStorage.removeItem('preferencia_usuario');
 		    window.location.href = 'index.html';
 		},
 		function (response) { alert(JSON.stringify(response)) });
