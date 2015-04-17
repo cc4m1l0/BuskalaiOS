@@ -14,11 +14,11 @@ function MainViewModel() {
     // Editable data
     self.items = ko.observableArray([]);
     //cargamos datos locales
-    var dataLoaded = this.cargarLocal();
+    /*var dataLoaded = this.cargarLocal();
     if (dataLoaded)
         alert("cargó");
     else
-        alert("nocargó");
+        alert("nocargó");*/
     //obtenemos la preferencia del usuario
     var preferenciausuario = window.localStorage.getItem('preferencia_usuario');
     //envio el query para obtener datos de los establecimientos
