@@ -39,15 +39,15 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, self);
                 self.items.push(est);
-                self.guardarLocal();
             });
+            self.guardarLocal();
         },
         error: function (objeto, quepaso, otroobj) {
             alert("Pasó lo siguiente: " + quepaso);
         }
     });
 
-    this.guardarLocal = function () 
+    self.guardarLocal = function () 
     {
 	    var jsData = ko.toJS(self.items);
 	    var data = [];
@@ -66,7 +66,7 @@ function MainViewModel() {
 	    window.localStorage.setItem("todositems", JSON.stringify(data));
     }
 
-    this.cargarLocal = function (data) 
+    self.cargarLocal = function (data) 
     {
 		var jsonItems = window.localStorage.getItem("todositems");
 		if (!jsonItems) {
