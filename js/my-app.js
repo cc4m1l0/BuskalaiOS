@@ -88,7 +88,10 @@ myApp.onPageInit('perfil', function (page) {
         $.ajax({
             type: "GET",
             url: "http://54.186.255.219/buskala/querys/InsertarBD.php?"+datastring,
-            success: function (result) {
+            success: function (result) {        
+                window.localStorage.setItem('id_usuario', idusuario);
+                window.localStorage.setItem('nombre_usuario', nombreusuario);
+                window.localStorage.setItem('imagen_usuario', imagenusuario);
                 mainView.router.loadPage('preferencias.html');
             },
             error: function (objeto, quepaso, otroobj) {
