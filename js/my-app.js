@@ -112,10 +112,10 @@ myApp.onPageInit('preferencias', function (page) {
     });
 });
 
-myApp.onPageInit('main', function (page) {
+myApp.onPageAfterAnimation('main', function (page) {
     
-    /*var mainViewModel = new MainViewModel();
-    ko.applyBindings(mainViewModel);*/
+    var mainViewModel = new MainViewModel();
+    ko.applyBindings(mainViewModel);
 
     $$('.logout-fb').on('click', function () {
         facebookConnectPlugin.logout(

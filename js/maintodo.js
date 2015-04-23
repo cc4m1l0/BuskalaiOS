@@ -14,7 +14,19 @@ function MainViewModel() {
     // Editable data
     self.items = ko.observableArray([]);
     //cargamos datos locales
-
+    var lista = '<li>
+                        <a href="#" data-bind="attr: { id: idEstablecimiento }" class="item-link item-content">
+                            <div class="item-media"><img data-bind="attr: { src: imagenEstablecimiento }" alt="logo" width="80"></div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title" data-bind="text: nombreEstablecimiento">todo</div>
+                              </div>
+                              <div class="item-text" data-bind="text: direccionEstablecimiento">...</div>
+                              <div class="item-subtitle" data-bind="text: tipoEstablecimiento">...</div>
+                            </div>
+                          </a>
+                    </li>';
+    $("#lista_sugeridos").empty().append(lista);
     self.cargarLocal = function () 
     {
         var jsonItems = window.localStorage.getItem("todositems");
