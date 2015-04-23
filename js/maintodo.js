@@ -134,9 +134,27 @@ function MainViewModel() {
         url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=mejoresestablecimientos&latitudusuario=" + latitud + "&longitudusuario=" + longitud + "&fecha_actual=" + fechaactual + "&listaestablecimientos=" + listaestablecimientos,
         dataType: "text",
         success: function (result) {
-            //llenarTodos(result);
+            //obtengo el resultado y lo divido para obtener los mejores establecimientos
+            var res = result.split('@@@');
+            var establecimientotop = res[0];
+            var establecimientocerca = res[1];
+            var establecimientocheckin = res[2];
+            var establecimientootros = res[3];
             self.items.removeAll();
-            $(result).find("cliente").each(function () {
+            //obtengo establecimiento top
+            $(establecimientotop).find("cliente").each(function () {
+                var id, nombre, direccion, tipo, urlcarpeta, imagen;
+                id = $(this).find("id_cliente").text();
+                nombre = $(this).find("nombre_cliente").text();
+                direccion = $(this).find("direccion_cliente").text();
+                tipo = $(this).find("tipo_cliente").text();
+                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                imagen = urlcarpeta + "imagenS.png";
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png" , self);
+                self.items.push(est);
+            });
+            //obtengo establecimiento cerca
+            $(establecimientocerca).find("cliente").each(function () {
                 var id, nombre, direccion, tipo, urlcarpeta, imagen;
                 id = $(this).find("id_cliente").text();
                 nombre = $(this).find("nombre_cliente").text();
@@ -146,6 +164,35 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png" , self);
                 self.items.push(est);
+            });
+            //obtengo establecimiento check in
+            $(establecimientocheckin).find("cliente").each(function () {
+                var id, nombre, direccion, tipo, urlcarpeta, imagen;
+                id = $(this).find("id_cliente").text();
+                nombre = $(this).find("nombre_cliente").text();
+                direccion = $(this).find("direccion_cliente").text();
+                tipo = $(this).find("tipo_cliente").text();
+                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                imagen = urlcarpeta + "imagenS.png";
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto3.png" , self);
+                //self.items.push(est);
+            });
+            //obtengo otros establecimientos
+            var contador = 0;
+            $(establecimientootros).find("cliente").each(function () {
+                if(contador != 3)
+                {
+                    var id, nombre, direccion, tipo, urlcarpeta, imagen;
+                    id = $(this).find("id_cliente").text();
+                    nombre = $(this).find("nombre_cliente").text();
+                    direccion = $(this).find("direccion_cliente").text();
+                    tipo = $(this).find("tipo_cliente").text();
+                    urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                    imagen = urlcarpeta + "imagenS.png";
+                    var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "" , self);
+                    self.items.push(est);
+                    contador ++;
+                }
             });
             self.guardarLocalsugeridos();
         },
