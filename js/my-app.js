@@ -1,3 +1,8 @@
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    //alert("navigator.geolocation works well");
+}
+
 // Initialize your app
 var myApp = new Framework7({
   //init: false //Disable App's automatica initialization
@@ -112,8 +117,8 @@ myApp.onPageInit('preferencias', function (page) {
     });
 });
 
-myApp.onPageAfterAnimation('main', function (page) {
-    
+myApp.onPageInit('main', function (page) {
+
     var mainViewModel = new MainViewModel();
     ko.applyBindings(mainViewModel);
 
