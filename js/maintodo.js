@@ -1,11 +1,12 @@
 
-function Establecimiento(id,nombre, direccion, tipo, imagen, parent) 
+function Establecimiento(id,nombre, direccion, tipo, imagen, estadosugerido, parent) 
 { 
     this.idEstablecimiento = ko.observable(id); 
     this.nombreEstablecimiento = ko.observable(nombre); 
     this.direccionEstablecimiento = ko.observable(direccion); 
     this.tipoEstablecimiento = ko.observable(tipo); 
     this.imagenEstablecimiento = ko.observable(imagen); 
+    this.estadosugeridoEstablecimiento = ko.observable(estadosugerido);
     this.parent = parent;
 }
 
@@ -55,7 +56,7 @@ function MainViewModel() {
         self.itemstodos.removeAll();
         var jsData = JSON.parse(jsonItems);
         jsData.forEach((function (jsItem) {
-            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, self);
+            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento ,self);
             self.itemstodos.push(item);
         }).bind(self));
 
@@ -66,7 +67,7 @@ function MainViewModel() {
         self.items.removeAll();
         var jsData = JSON.parse(jsonItems);
         jsData.forEach((function (jsItem) {
-            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, self);
+            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento, self);
             self.items.push(item);
         }).bind(self));
 
@@ -91,7 +92,7 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, self);
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "", self);
                 listaestablecimientos += id + ",";
                 self.itemstodos.push(est);
             });
@@ -114,7 +115,8 @@ function MainViewModel() {
                 nombreEstablecimiento: item.nombreEstablecimiento,
                 direccionEstablecimiento: item.direccionEstablecimiento,
                 tipoEstablecimiento: item.tipoEstablecimiento, 
-                imagenEstablecimiento: item.imagenEstablecimiento
+                imagenEstablecimiento: item.imagenEstablecimiento,
+                estadosugeridoEstablecimiento: item.estadosugeridoEstablecimiento
 		    };
 		    data.push(itemData);
 	    }).bind(self));
@@ -142,8 +144,7 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, self);
-                listaestablecimientos += id + ",";
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png" , self);
                 self.items.push(est);
             });
             self.guardarLocalsugeridos();
@@ -164,7 +165,8 @@ function MainViewModel() {
                 nombreEstablecimiento: item.nombreEstablecimiento,
                 direccionEstablecimiento: item.direccionEstablecimiento,
                 tipoEstablecimiento: item.tipoEstablecimiento, 
-                imagenEstablecimiento: item.imagenEstablecimiento
+                imagenEstablecimiento: item.imagenEstablecimiento,
+                estadosugeridoEstablecimiento : item.estadosugeridoEstablecimiento
             };
             data.push(itemData);
         }).bind(self));
