@@ -1,13 +1,12 @@
 
-function Establecimiento(id,nombre, direccion, tipo, imagen, estadosugerido, parent) 
+function Establecimiento(id,nombre, direccion, tipo, imagen, estadosugerido) 
 { 
-    this.idEstablecimiento = ko.observable(id); 
-    this.nombreEstablecimiento = ko.observable(nombre); 
-    this.direccionEstablecimiento = ko.observable(direccion); 
-    this.tipoEstablecimiento = ko.observable(tipo); 
-    this.imagenEstablecimiento = ko.observable(imagen); 
-    this.estadosugeridoEstablecimiento = ko.observable(estadosugerido);
-    this.parent = parent;
+    this.idEstablecimiento = id; 
+    this.nombreEstablecimiento = nombre; 
+    this.direccionEstablecimiento = direccion; 
+    this.tipoEstablecimiento = tipo; 
+    this.imagenEstablecimiento = imagen; 
+    this.estadosugeridoEstablecimiento = estadosugerido;
 }
 
 function MainViewModel() {
@@ -31,47 +30,41 @@ function MainViewModel() {
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
     // Editable data
-    self.itemstodos = ko.observableArray([]);
-    self.items = ko.observableArray([]);
+    var itemstodos = [{}];
+    var items = [{}];
     //cargamos datos locales
-    /*var lista = '<li>
-                        <a href="#" data-bind="attr: { id: idEstablecimiento }" class="item-link item-content">
-                            <div class="item-media"><img data-bind="attr: { src: imagenEstablecimiento }" alt="logo" width="80"></div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title" data-bind="text: nombreEstablecimiento">todo</div>
-                              </div>
-                              <div class="item-text" data-bind="text: direccionEstablecimiento">...</div>
-                              <div class="item-subtitle" data-bind="text: tipoEstablecimiento">...</div>
-                            </div>
-                          </a>
-                    </li>';
-    $("#lista_sugeridos").append(lista);*/
     self.cargarLocal = function () 
     {
         var jsonItems = window.localStorage.getItem("todositems");
         if (!jsonItems) {
             return;
         }
-        self.itemstodos.removeAll();
+        var tList = '';
+        itemstodos.length = 0;
         var jsData = JSON.parse(jsonItems);
         jsData.forEach((function (jsItem) {
-            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento ,self);
-            self.itemstodos.push(item);
+            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento);
+            itemstodos.push(item);
+            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
+
         }).bind(self));
+        $("#lista_todos").empty().append(tList);
 
         var jsonItems = window.localStorage.getItem("sugeridositems");
         if (!jsonItems) {
             return;
         }
-        self.items.removeAll();
+
+        var tList = '';
+        items.length = 0;
         var jsData = JSON.parse(jsonItems);
         jsData.forEach((function (jsItem) {
-            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento, self);
-            self.items.push(item);
+            var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento);
+            items.push(item);
+            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.estadosugeridoEstablecimiento+"'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
         }).bind(self));
+        $("#lista_sugeridos").empty().append(tList);
 
-        return;
     }
     self.cargarLocal();
     //obtenemos la preferencia del usuario
@@ -83,7 +76,8 @@ function MainViewModel() {
         dataType: "xml",
         success: function (result) {
             //llenarTodos(result);
-            self.itemstodos.removeAll();
+            var tList = '';
+            itemstodos.length = 0;
             $(result).find("cliente").each(function () {
                 var id, nombre, direccion, tipo, urlcarpeta, imagen;
                 id = $(this).find("id_cliente").text();
@@ -92,10 +86,12 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "", self);
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
                 listaestablecimientos += id + ",";
-                self.itemstodos.push(est);
+                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                itemstodos.push(est);
             });
+            $("#lista_todos").empty().append(tList);
             self.guardarLocal();
             self.cargarSugeridos();
         },
@@ -106,7 +102,7 @@ function MainViewModel() {
 
     self.guardarLocal = function () 
     {
-	    var jsData = ko.toJS(self.itemstodos);
+	    var jsData = ko.toJS(itemstodos);
 	    var data = [];
 
 	    jsData.forEach((function (item) {
@@ -140,7 +136,8 @@ function MainViewModel() {
             var establecimientocerca = res[1];
             var establecimientocheckin = res[2];
             var establecimientootros = res[3];
-            self.items.removeAll();
+            var tList = '';
+            items.length = 0;
             //obtengo establecimiento top
             $(establecimientotop).find("cliente").each(function () {
                 var id, nombre, direccion, tipo, urlcarpeta, imagen;
@@ -150,8 +147,9 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png" , self);
-                self.items.push(est);
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png");
+                items.push(est);
+                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento cerca
             $(establecimientocerca).find("cliente").each(function () {
@@ -162,8 +160,9 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png" , self);
-                self.items.push(est);
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png");
+                items.push(est);
+                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto2.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento check in
             $(establecimientocheckin).find("cliente").each(function () {
@@ -174,8 +173,9 @@ function MainViewModel() {
                 tipo = $(this).find("tipo_cliente").text();
                 urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
-                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto3.png" , self);
-                //self.items.push(est);
+                var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto3.png");
+                //items.push(est);
+                /*tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto3.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";*/
             });
             //obtengo otros establecimientos
             var contador = 0;
@@ -189,11 +189,13 @@ function MainViewModel() {
                     tipo = $(this).find("tipo_cliente").text();
                     urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
                     imagen = urlcarpeta + "imagenS.png";
-                    var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "" , self);
-                    self.items.push(est);
+                    var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
+                    items.push(est);
                     contador ++;
+                    tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src=''  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
                 }
             });
+            $("#lista_sugeridos").empty().append(tList);
             self.guardarLocalsugeridos();
         },
         error: function (objeto, quepaso, otroobj) {
@@ -203,7 +205,7 @@ function MainViewModel() {
     }
     self.guardarLocalsugeridos = function () 
     {
-        var jsData = ko.toJS(self.items);
+        var jsData = ko.toJS(items);
         var data = [];
 
         jsData.forEach((function (item) {

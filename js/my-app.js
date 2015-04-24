@@ -108,8 +108,9 @@ myApp.onPageInit('perfil', function (page) {
 });
 
 myApp.onPageInit('preferencias', function (page) {
-    var prefViewModel = new PreferenciaViewModel();
-    ko.applyBindings(prefViewModel);
+    
+    PreferenciaViewModel();
+
     $$('.listapreferencias').on('click', function () {
         var preferenciausuario = jQuery(this).attr("id");
         window.localStorage.setItem('preferencia_usuario', preferenciausuario);
@@ -118,19 +119,25 @@ myApp.onPageInit('preferencias', function (page) {
 });
 
 myApp.onPageInit('main', function (page) {
+    MainViewModel();
 
-    var mainViewModel = new MainViewModel();
-    ko.applyBindings(mainViewModel);
-
-    $$('.logout-fb').on('click', function () {
-        facebookConnectPlugin.logout(
-		function (response) //success
-		{
-		    //alert(JSON.stringify(response))
-            window.localStorage.removeItem('id_usuario');
-            window.localStorage.removeItem('preferencia_usuario');
-		    window.location.href = 'index.html';
-		},
-		function (response) { alert(JSON.stringify(response)) });
+    $$('.link-configuracion').on('click', function () {
+        mainView.router.loadPage('configuracion.html');
     });
+});
+
+myApp.onPageInit('configuracion', function (page) {
+    
+    ConfigViewModel();
+
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
+    $$('.listapreferenciasc').on('click', function () {
+        var preferenciausuario = jQuery(this).attr("id");
+        window.localStorage.setItem('preferencia_usuario', preferenciausuario);
+        mainView.router.loadPage('main.html');
+    });
+    
 });

@@ -1,18 +1,13 @@
-
-function Preferencia(id,imagen, parent) 
-{ 
-    this.idPreferencia = ko.observable(id); 
-    this.imagenPreferencia = ko.observable(imagen); 
-    this.parent = parent;
-}
-
-function PreferenciaViewModel() {
+function PreferenciaViewModel() 
+{
     // Editable data
-    this.items = ko.observableArray([
-        new Preferencia("crossover", "img/crossover.png",this),
-        new Preferencia("electronica", "img/electronica.png",this),
-        new Preferencia("rock", "img/rock.png",this),
-        new Preferencia("tropical", "img/tropical.png",this),
-        new Preferencia("urban", "img/urban.png",this)
-    ]);
+    var tList = '';
+    var ids = ["crossover", "electronica", "rock", "tropical", "urban"];
+    var imgs = ["img/crossover.png","img/electronica.png","img/rock.png","img/tropical.png","img/urban.png"];
+    for(var i=0; i<ids.length; i++)
+    {
+        tList += "<li style='width: 100%; height: fit-content;'><a href='#' id='"+ids[i]+"' class='listapreferencias item-link item-content'><div class='item-inner' style='width: 100%; height: fit-content;'><img src='"+imgs[i]+"' alt='logo' style='max-width: 100%; max-height: 100%; height: auto;' ></div></a></li>";
+    }
+
+    $("#listacpref").append(tList);
 }

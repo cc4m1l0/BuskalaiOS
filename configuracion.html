@@ -1,0 +1,52 @@
+<!-- We don't need full layout here, because this page will be parsed with Ajax-->
+<!-- Top Navbar-->
+<div class="navbar">
+  <div class="navbar-inner" style="background-color: #D60831;">
+    <div class="left">
+      <a href="#" class="link-back-button link">
+                <i class="icon icon-back"></i>
+                <span style="color:#fff;">volver</span>
+        </a>
+    </div>
+    <div class="center" style="color:#fff;">Configuracion</div>
+    <div class="right">
+        <a href="#" class="link-qr link icon-only">
+            <i class="icon info-icon-1"></i>
+        </a>
+    </div>
+  </div>
+</div>
+<div class="pages">
+  <!-- Page, data-page contains page name-->
+  <div data-page="configuracion" class="page tabbar-labels-fixed">    
+    <!-- Bottom Navbar-->
+    <div class="toolbar">
+        <div class="toolbar-inner">
+            <a href="#tabc1" class="tab-link active">Perfil</a>
+            <a href="#tabc2" class="link-preferencias tab-link">Preferencia</a>
+        </div>
+    </div>
+    <!-- Scrollable page content-->
+    <div class="page-content">
+        <div class="tabs">
+        <div id="tabc1" class="tab active">  
+            <div class="circular" style="margin-top:15px; width:150px; height:150px; background-size: 150px, 150px;" align="center"></div>
+            <div id="imgusuario" class="circular" style="width:150px; height:150px; background-size: 150px, 150px; margin-top: -180px;" align="center"></div>
+            <div id="nombreusuario" style="color:#000; font-size:24px; display: block; margin-left: auto; margin-right: auto; text-align:center;"></div>
+            <hr>
+            
+        </div>
+        <div id="tabc2" class="tab">
+          <div class="card">
+             <div class="card-content">
+              <div class="list-block media-list">
+                  <ul id="lpreferencias">
+                  </ul>
+                </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

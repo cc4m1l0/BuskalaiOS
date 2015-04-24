@@ -6,10 +6,10 @@
     <div class="left"><i class="icon buskala-icon-1"></i></div>
     <div class="center sliding"></div>
     <div class="right">
-        <a href="#" class="link icon-only">
+        <a href="#" class="link-qr link icon-only">
             <i class="icon qr-icon-1"></i>
         </a>
-        <a href="#" class="link icon-only">
+        <a href="#" class="link-configuracion link icon-only">
             <i class="icon settings-icon-1"></i>
         </a>
     </div>
@@ -33,21 +33,7 @@
             <div class="card">
              <div class="card-content">
                 <div class="list-block media-list">
-                    <ul id="lista_sugeridos" data-bind="foreach: items">
-                    <li>
-                        <a href="#" data-bind="attr: { id: idEstablecimiento }" class="item-link item-content">
-                            <div class="item-media"><img src="img/buskala_blank.png" alt="logo" width="80"></div>
-                            <div class="item-media" style="margin-left:-80px"><img data-bind="attr: { src: imagenEstablecimiento }" width="80"></div>
-                            <div class="item-media" style="margin-left:-80px"><img data-bind="attr: { src: estadosugeridoEstablecimiento }"  width="81"></div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title" data-bind="text: nombreEstablecimiento">todo</div>
-                              </div>
-                              <div class="item-text" data-bind="text: direccionEstablecimiento">...</div>
-                              <div class="item-subtitle" data-bind="text: tipoEstablecimiento">...</div>
-                            </div>
-                          </a>
-                    </li>
+                    <ul id="lista_sugeridos">
                     </ul>
                 </div>
               </div>
@@ -66,20 +52,7 @@
           <div class="card">
              <div class="card-content">
                 <div class="list-block media-list">
-                    <ul id="lista_todos" data-bind="foreach: itemstodos">
-                    <li>
-                        <a href="#" data-bind="attr: { id: idEstablecimiento }" class="item-link item-content">
-                            <div class="item-media"><img src="img/buskala_blank.png" alt="logo" width="80"></div>
-                            <div class="item-media" style="margin-left:-80px"><img data-bind="attr: { src: imagenEstablecimiento }" width="80"></div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title" data-bind="text: nombreEstablecimiento">todo</div>
-                              </div>
-                              <div class="item-text" data-bind="text: direccionEstablecimiento">...</div>
-                              <div class="item-subtitle" data-bind="text: tipoEstablecimiento">...</div>
-                            </div>
-                          </a>
-                    </li>
+                    <ul id="lista_todos" >
                     </ul>
                 </div>
               </div>
