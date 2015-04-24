@@ -4,13 +4,13 @@
   <div class="navbar-inner" style="background-color: #D60831;">
     <div class="left">
       <a href="#" class="link-back-button link">
-                <i class="icon icon-back"></i>
-                <span style="color:#fff;">volver</span>
+                <i class="icon icon-back color-white"></i>
+                <span class="color-white">volver</span>
         </a>
     </div>
     <div class="center" style="color:#fff;">Configuracion</div>
     <div class="right">
-        <a href="#" class="link-qr link icon-only">
+        <a href="#" data-popup=".popup-about" class="link-qr link icon-only open-popup">
             <i class="icon info-icon-1"></i>
         </a>
     </div>
@@ -32,9 +32,13 @@
         <div id="tabc1" class="tab active">  
             <div class="circular" style="margin-top:15px; width:150px; height:150px; background-size: 150px, 150px;" align="center"></div>
             <div id="imgusuario" class="circular" style="width:150px; height:150px; background-size: 150px, 150px; margin-top: -180px;" align="center"></div>
-            <div id="nombreusuario" style="color:#000; font-size:24px; display: block; margin-left: auto; margin-right: auto; text-align:center;"></div>
-            <hr>
-            
+            <div id="nombreusuario" style="color:#000; font-size:24px; display: block; margin-top:-15px; margin-left: auto; margin-right: auto; text-align:center;"></div>
+            <div class="card" style="margin-top:-12px;">
+              <div class="card-content">
+                <div class="card-footer"><a href="#" class="link color-black">Total puntos</a>
+                  <a id="totalpuntos" href="#" class="link color-black">0</a></div>
+              </div>
+            </div>
         </div>
         <div id="tabc2" class="tab">
           <div class="card">
@@ -46,6 +50,14 @@
              </div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- About Popup -->
+    <div class="popup tablet-fullscreen popup-about">
+      <div class="content-block">
+        <p><a href="#" class="close-popup">Close popup</a></p>
+        <p>Acerca de Buskala</p>
+        <p></p>
       </div>
     </div>
   </div>
