@@ -45,7 +45,7 @@ function MainViewModel() {
         jsData.forEach((function (jsItem) {
             var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento);
             itemstodos.push(item);
-            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
+            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='listatodos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
 
         }).bind(self));
         $("#lista_todos").empty().append(tList);
@@ -61,7 +61,7 @@ function MainViewModel() {
         jsData.forEach((function (jsItem) {
             var item = new Establecimiento(jsItem.idEstablecimiento, jsItem.nombreEstablecimiento,jsItem.direccionEstablecimiento,jsItem.tipoEstablecimiento,jsItem.imagenEstablecimiento, jsItem.estadosugeridoEstablecimiento);
             items.push(item);
-            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.estadosugeridoEstablecimiento+"'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
+            tList+="<li><a href='#' id='"+jsItem.idEstablecimiento+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.imagenEstablecimiento+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+jsItem.estadosugeridoEstablecimiento+"'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+jsItem.nombreEstablecimiento+"</div></div><div class='item-text'>"+jsItem.direccionEstablecimiento+"</div><div class='item-subtitle'>"+jsItem.tipoEstablecimiento+"</div></div></a></li>";
         }).bind(self));
         $("#lista_sugeridos").empty().append(tList);
 
@@ -88,7 +88,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
                 listaestablecimientos += id + ",";
-                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                tList+="<li><a href='#' id='"+id+"' class='listatodos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
                 itemstodos.push(est);
             });
             $("#lista_todos").empty().append(tList);
@@ -136,7 +136,7 @@ function MainViewModel() {
             var establecimientocerca = res[1];
             var establecimientocheckin = res[2];
             var establecimientootros = res[3];
-            var tList = '';
+            var tLists = '';
             items.length = 0;
             //obtengo establecimiento top
             $(establecimientotop).find("cliente").each(function () {
@@ -149,7 +149,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png");
                 items.push(est);
-                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                tLists+="<li><a href='#' id='1' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento cerca
             $(establecimientocerca).find("cliente").each(function () {
@@ -162,7 +162,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png");
                 items.push(est);
-                tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto2.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                tLists+="<li><a href='#' id='"+id+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto2.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento check in
             $(establecimientocheckin).find("cliente").each(function () {
@@ -175,7 +175,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto3.png");
                 //items.push(est);
-                /*tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto3.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";*/
+                /*tLists+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto3.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";*/
             });
             //obtengo otros establecimientos
             var contador = 0;
@@ -192,10 +192,10 @@ function MainViewModel() {
                     var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
                     items.push(est);
                     contador ++;
-                    tList+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src=''  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                    tLists+="<li><a href='#' id='"+id+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src=''  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
                 }
             });
-            $("#lista_sugeridos").empty().append(tList);
+            $("#lista_sugeridos").empty().append(tLists);
             self.guardarLocalsugeridos();
         },
         error: function (objeto, quepaso, otroobj) {

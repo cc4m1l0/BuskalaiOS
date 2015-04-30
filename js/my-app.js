@@ -121,6 +121,31 @@ myApp.onPageInit('preferencias', function (page) {
 myApp.onPageInit('main', function (page) {
     MainViewModel();
 
+    $$('#lista_sugeridos').on('click', '.listasugeridos' ,function () {
+        var idcliente = jQuery(this).attr("id");
+        mainView.router.loadPage('detallecliente.html?id='+idcliente);
+    });
+
+    $$('#lista_todos').on('click', '.listatodos' ,function () {
+        var idcliente = jQuery(this).attr("id");
+        mainView.router.loadPage('detallecliente.html?id='+idcliente);
+    });
+
+    $$('.link-configuracion').on('click', function () {
+        mainView.router.loadPage('configuracion.html');
+    });
+});
+
+myApp.onPageInit('detalle', function (page) {
+    
+    var idcliente = page.query.id;
+
+    DetalleViewModel(idcliente);
+
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
     $$('.link-configuracion').on('click', function () {
         mainView.router.loadPage('configuracion.html');
     });
