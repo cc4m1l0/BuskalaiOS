@@ -67,6 +67,7 @@ function MainViewModel() {
 
     }
     self.cargarLocal();
+
     //obtenemos la preferencia del usuario
     var preferenciausuario = window.localStorage.getItem('preferencia_usuario');
     //envio el query para obtener datos de los establecimientos
@@ -149,7 +150,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png");
                 items.push(est);
-                tLists+="<li><a href='#' id='1' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
+                tLists+="<li><a href='#' id='"+id+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento cerca
             $(establecimientocerca).find("cliente").each(function () {

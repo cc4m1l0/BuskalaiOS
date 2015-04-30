@@ -23,6 +23,10 @@ myApp.onPageInit('registro', function (page) {
     mainView.params.swipeBackPage = false;
     mainView.params.preloadPreviousPage = false;
     $$('.registro-fb').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         if (!window.cordova) {
             var appId = prompt("Enter FB Application ID", "");
             facebookConnectPlugin.browserInit(appId);
@@ -33,7 +37,7 @@ myApp.onPageInit('registro', function (page) {
 		    //alert(JSON.stringify(response))
 		    mainView.router.loadPage('perfil.html');
 		},
-		function (response) { alert("Has cancelado tu registro.") });
+		function (response) { myApp.alert('Has cancelado tu registro.', 'Sin registro') });
     });
 });
 
@@ -71,9 +75,13 @@ myApp.onPageInit('perfil', function (page) {
 	    }
 	},
 	function (response)
-	{ alert("Tenemos problemas para ingresar con Facebook") });
+	{ myApp.alert('Tenemos problemas para ingresar con Facebook.', 'Sin registro')});
 
     $$('.ingreso-app').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         var now = new Date();
         var fechaactual = now.format("d/m/Y H:i");
         var datastring = "tipo=nuevousuario&idusuario=" + idusuario + "&nombre=" + nombreusuario + "&correo=" + emailusuario + "&fecha_registro=" + fechaactual + "&ubicacion=Medellin&latitud=&longitud=&sexo=" + generousuario + "&edad=0&imagen=" + imagenusuario;
@@ -112,6 +120,10 @@ myApp.onPageInit('preferencias', function (page) {
     PreferenciaViewModel();
 
     $$('.listapreferencias').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         var preferenciausuario = jQuery(this).attr("id");
         window.localStorage.setItem('preferencia_usuario', preferenciausuario);
         mainView.router.loadPage('main.html');
@@ -121,17 +133,31 @@ myApp.onPageInit('preferencias', function (page) {
 myApp.onPageInit('main', function (page) {
     MainViewModel();
 
+
     $$('#lista_sugeridos').on('click', '.listasugeridos' ,function () {
+
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         var idcliente = jQuery(this).attr("id");
         mainView.router.loadPage('detallecliente.html?id='+idcliente);
     });
 
     $$('#lista_todos').on('click', '.listatodos' ,function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         var idcliente = jQuery(this).attr("id");
         mainView.router.loadPage('detallecliente.html?id='+idcliente);
     });
 
     $$('.link-configuracion').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         mainView.router.loadPage('configuracion.html');
     });
 });
@@ -139,7 +165,6 @@ myApp.onPageInit('main', function (page) {
 myApp.onPageInit('detalle', function (page) {
     
     var idcliente = page.query.id;
-
     DetalleViewModel(idcliente);
 
     $$('.link-back-button').on('click', function () {
