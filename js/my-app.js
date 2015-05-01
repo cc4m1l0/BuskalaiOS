@@ -13,8 +13,7 @@ var $$ = Dom7;
 
 /* Initialize views */
 var mainView = myApp.addView('.view-main', {
-  dynamicNavbar: true,
-  swipeBackPage: false
+  dynamicNavbar: true
 })
 
 // Callbacks to run specific code for specific pages, for example for About page:
@@ -164,10 +163,16 @@ myApp.onPageInit('main', function (page) {
 
 myApp.onPageInit('detalle', function (page) {
     
+    loadjscssfile("../css/font-awesome.min.css", "css") ////dynamically load and add this .css file
+    loadjscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
+    
     var idcliente = page.query.id;
     DetalleViewModel(idcliente);
 
     $$('.link-back-button').on('click', function () {
+        removejscssfile("../css/font-awesome.min.css", "css") ////dynamically load and add this .css file
+        removejscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
+        
         mainView.router.back();
     });
 

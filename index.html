@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="css/my-app.css">
     <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="css/styleicons.css">
+    <link rel="stylesheet" href="css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
     <style>
-		.circular {		
+		.imgcircular {		
 			display: block;
 			margin-left: auto;
 			margin-right: auto;
@@ -49,7 +50,7 @@
         <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
         <div class="pages navbar-through toolbar-through">
           <!-- Page, data-page contains page name-->
-          <div data-page="index"  class="page no-navbar">
+          <div data-page="index"  class="page no-swipeback no-navbar">
             <!-- Scrollable page content-->
             <div class="page-content" style="background-color:#000">
               
@@ -63,6 +64,8 @@
     <div id="fb-root"></div>
     <script type="text/javascript" src="js/jquery.min.js"></script>	
     <script type="text/javascript" src="cordova.js"></script>
+    <!-- Path to dateformat-->
+    <script src="js/star-rating.js" type="text/javascript"></script>
 	<script type="text/javascript" src="js/knockout-3.3.0.js"></script>	
     <script type="text/javascript" src="js/preferenciastodo.js"></script>
     <script type="text/javascript" src="js/configtodo.js"></script>

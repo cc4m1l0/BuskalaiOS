@@ -1,4 +1,5 @@
 
+
 function Establecimiento(id,nombre, direccion, tipo, imagen, estadosugerido) 
 { 
     this.idEstablecimiento = id; 
