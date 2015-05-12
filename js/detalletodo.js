@@ -110,4 +110,45 @@ function DetalleViewModel(id) {
             alert("Pasó lo siguiente: " + quepaso);
         }
     });
+
+    //envio el query para obtener datos en tiempo real del establecimiento
+    var now = new Date();
+    var fechaactual = now.format("d/m/Y H:i");
+    $.ajax({
+        type: "GET",
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=cargartiemporealcliente&id=" + idcliente + "&fecha_actual=" + fechaactual,
+        dataType: "text",
+        success: function (result) {
+            //obtengo el resultado y lo divido para obtener los datos
+            var res = result.split(',');
+            var numerohombres = res[0];
+            var numeromujeres = res[1];
+            var totalpersonas = res[2];
+            var totaledades = res[3];
+            var totalpersonasconedad = res[4];
+            //inicio var de resultados finales
+            var porcentajehombres = 0;
+            var porcentajemujeres = 0;
+            var promedioedad = 0;
+            //realizo los calculos para obtener porcentaje y promedio
+            if(totalpersonas != 0)
+            {
+                porcentajehombres = (numerohombres*100)/totalpersonas;
+                porcentajemujeres = (numeromujeres*100)/totalpersonas;
+                if(totalpersonasconedad != 0)
+                {
+                    promedioedad = totaledades/totalpersonasconedad;
+                }
+            }
+            //llevo valores al usuario
+            document.getElementById('promedio_hombres').innerHTML = porcentajehombres + "%";
+            document.getElementById('promedio_mujeres').innerHTML = porcentajemujeres + "%";
+            document.getElementById('promedio_edad').innerHTML = promedioedad;
+
+
+        },
+        error: function (objeto, quepaso, otroobj) {
+            alert("Pasó lo siguiente: " + quepaso);
+        }
+    });
 }
