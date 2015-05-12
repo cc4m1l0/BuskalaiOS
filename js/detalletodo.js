@@ -60,7 +60,7 @@ function DetalleViewModel(id) {
     //envio el query para obtener datos del establecimiento
     $.ajax({
         type: "GET",
-        url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=cargarcliente&id=" + idcliente,
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=cargarcliente&id=" + idcliente,
         dataType: "xml",
         success: function (result) {
             $(result).find("cliente").each(function () {
@@ -68,7 +68,7 @@ function DetalleViewModel(id) {
                 nombre = $(this).find("nombre_cliente").text();
                 direccion = $(this).find("direccion_cliente").text();
                 tipo = $(this).find("tipo_cliente").text();
-                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
                 imagenl = urlcarpeta + "imagenL.png";
                 descripcion = $(this).find("descripcion_cliente").text();
@@ -93,10 +93,10 @@ function DetalleViewModel(id) {
         }
     });
 
-    //envio el query para obtener datos del establecimiento
+    //envio el query para obtener datos de la calificacion del establecimiento
     $.ajax({
         type: "GET",
-        url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=cargarcalificacion&id=" + idcliente,
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=cargarcalificacion&id=" + idcliente,
         dataType: "text",
         success: function (result) {
             var r = result;

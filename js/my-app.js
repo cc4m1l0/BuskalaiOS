@@ -100,7 +100,7 @@ myApp.onPageInit('perfil', function (page) {
         //envio el query para guardar el nuevo usuario en la BD
         $.ajax({
             type: "GET",
-            url: "http://54.186.255.219/buskala/querys/InsertarBD.php?"+datastring,
+            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
             success: function (result) {        
                 window.localStorage.setItem('id_usuario', idusuario);
                 window.localStorage.setItem('nombre_usuario', nombreusuario);

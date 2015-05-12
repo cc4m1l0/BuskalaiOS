@@ -15,7 +15,7 @@ function ConfigViewModel()
     //envio el query para obtener los puntos del usuario
     $.ajax({
         type: "GET",
-        url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=totalpuntosusuario&idusuario=" + idusuario,
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=totalpuntosusuario&idusuario=" + idusuario,
         dataType: "text",
         success: function (result) {
         	var resultado = result;

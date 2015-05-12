@@ -74,7 +74,7 @@ function MainViewModel() {
     //envio el query para obtener datos de los establecimientos
     $.ajax({
         type: "GET",
-        url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=sugeridousuario&preferencia=" + preferenciausuario,
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=sugeridousuario&preferencia=" + preferenciausuario,
         dataType: "xml",
         success: function (result) {
             //llenarTodos(result);
@@ -86,7 +86,7 @@ function MainViewModel() {
                 nombre = $(this).find("nombre_cliente").text();
                 direccion = $(this).find("direccion_cliente").text();
                 tipo = $(this).find("tipo_cliente").text();
-                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
                 listaestablecimientos += id + ",";
@@ -129,7 +129,7 @@ function MainViewModel() {
         listaestablecimientos = listaestablecimientos.slice(0, - 1);
         $.ajax({
         type: "GET",
-        url: "http://54.186.255.219/buskala/querys/ListarBD.php?tipo=mejoresestablecimientos&latitudusuario=" + latitud + "&longitudusuario=" + longitud + "&fecha_actual=" + fechaactual + "&listaestablecimientos=" + listaestablecimientos,
+        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=mejoresestablecimientos&latitudusuario=" + latitud + "&longitudusuario=" + longitud + "&fecha_actual=" + fechaactual + "&listaestablecimientos=" + listaestablecimientos,
         dataType: "text",
         success: function (result) {
             //obtengo el resultado y lo divido para obtener los mejores establecimientos
@@ -147,7 +147,7 @@ function MainViewModel() {
                 nombre = $(this).find("nombre_cliente").text();
                 direccion = $(this).find("direccion_cliente").text();
                 tipo = $(this).find("tipo_cliente").text();
-                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png");
                 items.push(est);
@@ -160,7 +160,7 @@ function MainViewModel() {
                 nombre = $(this).find("nombre_cliente").text();
                 direccion = $(this).find("direccion_cliente").text();
                 tipo = $(this).find("tipo_cliente").text();
-                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png");
                 items.push(est);
@@ -173,7 +173,7 @@ function MainViewModel() {
                 nombre = $(this).find("nombre_cliente").text();
                 direccion = $(this).find("direccion_cliente").text();
                 tipo = $(this).find("tipo_cliente").text();
-                urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto3.png");
                 //items.push(est);
@@ -189,7 +189,7 @@ function MainViewModel() {
                     nombre = $(this).find("nombre_cliente").text();
                     direccion = $(this).find("direccion_cliente").text();
                     tipo = $(this).find("tipo_cliente").text();
-                    urlcarpeta = "http://54.186.255.219/buskala/admin/" + $(this).find("urlcarpeta_cliente").text();
+                    urlcarpeta = "http://buskala.azurewebsites.net/admin/" + $(this).find("urlcarpeta_cliente").text();
                     imagen = urlcarpeta + "imagenS.png";
                     var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "");
                     items.push(est);
