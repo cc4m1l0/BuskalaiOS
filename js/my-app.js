@@ -176,9 +176,38 @@ myApp.onPageInit('detalle', function (page) {
         mainView.router.back();
     });
 
-    $$('.link-configuracion').on('click', function () {
-        mainView.router.loadPage('configuracion.html');
+    $$('.link-ircalificar-button').on('click', function () {
+        mainView.router.loadPage('calificar.html');
     });
+
+    $$('.link-video-button').on('click', function () {
+        alert("hola");
+    });
+
+    $$('.link-navegar-button').on('click', function () {
+        
+    });
+
+    $$('.link-check-button').on('click', function () {
+        
+    });
+});
+
+myApp.onPageInit('calificar', function (page) {
+    
+    var idcliente = page.query.id;
+
+    $$('.link-back-button').on('click', function () {
+        removejscssfile("../css/font-awesome.min.css", "css") ////dynamically load and add this .css file
+        removejscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
+        
+        mainView.router.back();
+    });
+
+    $$('.link-calificar-button').on('click', function () {
+        alert("hola");
+    });
+    
 });
 
 myApp.onPageInit('configuracion', function (page) {
@@ -205,6 +234,15 @@ myApp.onPageInit('info', function (page) {
     
     $$('.link-back-button').on('click', function () {
         mainView.router.back();
+    });
+
+    $$('.link-synet').on('click', function () {
+        window.open("http://synet.com.co", '_system');
+    });
+    
+    $("a[target='_blank']").click(function(e){
+      e.preventDefault();
+      window.open($(e.currentTarget).attr('href'), '_system', '');
     });
     
 });
