@@ -18,7 +18,7 @@
     <div class="toolbar tabbar">
       <div class="toolbar-inner">
           <a href="#" class="link-calificar-button link icon-only">
-              <i class="icon video-icon-1"></i>
+              <i class="icon calificar-icon-1"></i>
           </a>
       </div>
     </div>
@@ -28,16 +28,64 @@
         <ul>
           <li>
             <div class="item-content">
-              <div class="item-media"><img src="..." width="44"></div>
+              <div class="item-media" style="margin-top:-30px;"><img src="img/musica.png" width="35"></div>
               <div class="item-inner">
                 <div class="item-title-row">
-                  <div class="item-title">Yellow Submarine</div>
+                  <div class="item-title">Música</div>
                 </div>
-                <div class="item-subtitle">Beatles</div>
+                <div id="calificacion_musica" style=""></div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media" style="margin-top:-30px;"><img src="img/servicio.png" width="35"></div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">Servicio</div>
+                </div>
+                <div id="calificacion_servicio" style=""></div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media" style="margin-top:-30px;"><img src="img/ambiente.png" width="35"></div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">Ambiente</div>
+                </div>
+                <div id="calificacion_ambiente" style=""></div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-media" style="margin-top:-30px;"><img src="img/producto.png" width="35"></div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">Producto</div>
+                </div>
+                <div id="calificacion_producto" style=""></div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-input">
+                  <input type="text" id="input-comentario-calificar" placeholder="Comentarios y sugerencias">
+                </div>
               </div>
             </div>
           </li>
         </ul>
+      </div>
+    </div>
+    <div class="popup-overlay">
+      <div class="popup popup-felicitaciones" style="background: rgba(0,0,0,0.7);">
+        <div class="content-block" >
+          <p class="titulopremiacion">Aquí están las gracias</p>
+          <div class="circulorojo" style="margin-top:15px; width:150px; height:150px; background-size: 150px, 150px;" align="center"><p class="puntospremiacion">12</p><p class="txtpuntospremiacion">puntos</p></div>
+          <p class="subtitulopremiacion">Así es como decimos gracias en Buskala, continua calificando y aumentando tus puntos</p>
+          <p><a href="#" class="cerrar-felicitacion button button-fill" style=" background-color:#D52444">aceptar</a></p>
+        </div>
       </div>
     </div>
   </div>

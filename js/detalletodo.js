@@ -142,11 +142,8 @@ function DetalleViewModel(id) {
         dataType: "text",
         success: function (result) {
             var r = result;
-            document.getElementById('calificacion_cliente').innerHTML = "<input id='input-id' type='number' class='rating' min=0 max=5 step=0.5 value='"+r+"'  readonly=true data-show-clear='false' data-show-caption='false' data-size='xs'>";
-            $("#input-id").rating();
-
-            
-            //$("#input-id").rating({'value': '2'});
+            document.getElementById('calificacion_cliente').innerHTML = "<input id='input-calificacion-detalle' type='number' class='rating' min=0 max=5 step=0.5 value='"+r+"'  readonly=true data-show-clear='false' data-show-caption='false' data-size='xs'>";
+            $("#input-calificacion-detalle").rating();
         },
         error: function (objeto, quepaso, otroobj) {
             alert("Pasó lo siguiente: " + quepaso);

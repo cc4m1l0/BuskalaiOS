@@ -64,7 +64,7 @@ myApp.onPageInit('perfil', function (page) {
                 generousuario = response.gender;
                 imagenusuario = "https://graph.facebook.com/" + idusuario + "/picture?width=200";
 
-                document.getElementById("imgusuario").style.background = "url(" + "https://graph.facebook.com/" + idusuario + "/picture?width=200" + ") fixed center no-repeat";
+                document.getElementById("imgusuario").style.background = "url(" + "https://graph.facebook.com/" + idusuario + "/picture?width=200" + ") center no-repeat";
                 document.getElementById("nombreusuario").innerHTML = "<p>" + nombreusuario + "</p>";
             },
             function (response) { alert(JSON.stringify(response)) });
@@ -130,6 +130,7 @@ myApp.onPageInit('preferencias', function (page) {
 });
 
 myApp.onPageInit('main', function (page) {
+    
     MainViewModel();
 
 
@@ -177,36 +178,104 @@ myApp.onPageInit('detalle', function (page) {
     });
 
     $$('.link-ircalificar-button').on('click', function () {
-        mainView.router.loadPage('calificar.html');
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+        mainView.router.loadPage('calificar.html?id='+idcliente);
     });
 
     $$('.link-video-button').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         alert("hola");
     });
 
     $$('.link-navegar-button').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         
     });
 
     $$('.link-check-button').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         
     });
+});
+
+myApp.onPageBack('detalle', function (page) {
+
+    removejscssfile("../css/font-awesome.min.css", "css") ////dynamically load and add this .css file
+    removejscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
+    
 });
 
 myApp.onPageInit('calificar', function (page) {
     
     var idcliente = page.query.id;
+    CalificarViewModel();
 
     $$('.link-back-button').on('click', function () {
-        removejscssfile("../css/font-awesome.min.css", "css") ////dynamically load and add this .css file
-        removejscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
-        
         mainView.router.back();
     });
 
     $$('.link-calificar-button').on('click', function () {
-        alert("hola");
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+        var calificacionmusica = document.getElementById("input-musica-calificar").value;
+        var calificacionservicio = document.getElementById("input-servicio-calificar").value;
+        var calificacionambiente = document.getElementById("input-ambiente-calificar").value;
+        var calificacionproducto = document.getElementById("input-producto-calificar").value;
+        var calificacioncomentario = document.getElementById("input-comentario-calificar").value;
+        //enviamos la calificacion al servidor
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var idusuario = window.localStorage.getItem('id_usuario');
+        var datastring = "tipo=nuevacalificacion&idcliente="+idcliente+"&idusuario=" + idusuario + "&fecha_calificacion=" + fechaactual + "&calificacion1="+calificacionmusica+"&calificacion2="+calificacionservicio+"&calificacion3="+calificacionambiente+"&calificacion4=" + calificacionproducto + "&comentario=" + calificacioncomentario;
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+            success: function (result) {        
+                
+            },
+            error: function (objeto, quepaso, otroobj) {
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+        //enviamos los puntos del usuario al servidor
+        var puntos = "7";
+        if(calificacioncomentario != "")
+            puntos = "12";
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var datastring = "tipo=nuevoregistrousuario&idcliente="+idcliente+"idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=3";
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+            success: function (result) {    
+                myApp.popup('.popup-felicitaciones');
+            },
+            error: function (objeto, quepaso, otroobj) {
+                myApp.alert('En estos momentos tu publicación no se envió, intenta en un momento', 'Ups, problemas'); 
+                return;
+            }
+        });
     });
+
+    $$('.cerrar-felicitacion').on('click', function () {
+        myApp.closeModal('.popup-felicitaciones')
+        mainView.router.back();
+    });
+    
     
 });
 

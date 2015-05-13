@@ -1,0 +1,52 @@
+.circulorojo {		
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:50px;
+	margin-bottom:10px;
+	width: 200px;
+	height: 200px;
+    border: 10px;
+	border-radius: 150px;   
+    border-style: solid;
+    border-color: #D60831;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+    background-color: #D60831;
+}
+.titulopremiacion{
+	text-align: center;
+	color: #fff;
+	font-size: 32px;
+}
+.puntospremiacion{
+	text-align: center;
+	color: #fff;
+	font-size: 60px;
+}
+.txtpuntospremiacion{
+	text-align: center;
+	color: #fff;
+	font-size: 20px;
+}
+.subtitulopremiacion{
+	text-align: center;
+	color: #fff;
+	font-size: 20px;
+}
+.imgcircularroja {		
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top:50px;
+	margin-bottom:10px;
+	width: 200px;
+	height: 200px;
+    border: 10px;
+	border-radius: 150px;   
+    border-style: solid;
+    border-color: #D60831;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+    background-color: #D60831;
+}
