@@ -42,7 +42,7 @@ function DetalleViewModel(id) {
     var listaestablecimientos = "";
     var latitud = "";
     var longitud = "";
-    var id, nombre, direccion, tipo, urlcarpeta, imagen, imagenl, descripcion, web, rango, cover, horario, latitudcliente, longitudcliente;
+    var id, nombre, direccion, tipo, urlcarpeta, imagen, imagenl, descripcion, web, rango, cover, horario, latitudcliente, longitudcliente, idvideocliente;
 
     var onSuccess = function(position) {
         latitud = position.coords.latitude;
@@ -52,8 +52,7 @@ function DetalleViewModel(id) {
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        //alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
     }
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
@@ -78,20 +77,63 @@ function DetalleViewModel(id) {
                 horario = $(this).find("horario_cliente").text();
                 latitudcliente = $(this).find("latitud_cliente").text();
                 longitudcliente = $(this).find("longitud_cliente").text();
+                idvideocliente = $(this).find("videoyoutube_cliente").text();
             });
             document.getElementById('nombre_cliente').innerHTML = nombre;
             document.getElementById('imagen_cliente').src = imagenl;
             document.getElementById('imagen_clienteS').src = imagen;
             document.getElementById('direccion_cliente').innerHTML = direccion;
             document.getElementById('tipo_cliente').innerHTML = tipo;
-
+            document.getElementById('descripcion_cliente').innerHTML = descripcion;
+            document.getElementById('precios_cliente').innerHTML = "Precios: " + rango;
+            document.getElementById('cover_cliente').innerHTML = "Cover: " + cover;
+            document.getElementById('horario_cliente').innerHTML = "Horario: " + horario;
             
+            var video = document.getElementById('video_cliente');
+            if(idvideocliente != "sinvideo")
+            {
+                self.cargarVideo();
+            }
+            else
+            {
+                video.setAttribute("hidden", true);
+            }
             //$("#input-id").rating({'value': '2'});
         },
         error: function (objeto, quepaso, otroobj) {
             alert("Pasó lo siguiente: " + quepaso);
         }
     });
+
+    //cargar video si existe
+    self.cargarVideo = function () 
+    {
+        var video = document.getElementById('video_cliente');
+        //envio el query para obtener la url del video de youtube
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/admin/funciones/obtener_videoyoutube_url.php?idvideo=" + idvideocliente,
+            dataType: "text",
+            success: function (result) {
+                if(result != "error")
+                {
+                    //alert(result);
+                    var source = document.createElement('source');
+                    source.setAttribute('src', result);
+                    video.appendChild(source);
+                    video.play();
+                }
+                else
+                {
+                    video.setAttribute("hidden", true);
+                }
+            },
+            error: function (objeto, quepaso, otroobj) {
+                video.setAttribute("hidden", true);
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+    }
 
     //envio el query para obtener datos de la calificacion del establecimiento
     $.ajax({

@@ -25,8 +25,7 @@ function MainViewModel() {
     // onError Callback receives a PositionError object
     //
     function onError(error) {
-        alert('code: '    + error.code    + '\n' +
-              'message: ' + error.message + '\n');
+        //alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
     }
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
@@ -139,6 +138,7 @@ function MainViewModel() {
             var establecimientocheckin = res[2];
             var establecimientootros = res[3];
             var tLists = '';
+            var contador = 0;
             items.length = 0;
             //obtengo establecimiento top
             $(establecimientotop).find("cliente").each(function () {
@@ -151,6 +151,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto1.png");
                 items.push(est);
+                contador++;
                 tLists+="<li><a href='#' id='"+id+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto1.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento cerca
@@ -164,6 +165,7 @@ function MainViewModel() {
                 imagen = urlcarpeta + "imagenS.png";
                 var est = new Establecimiento(id, nombre, direccion, tipo, imagen, "img/puesto2.png");
                 items.push(est);
+                contador++;
                 tLists+="<li><a href='#' id='"+id+"' class='listasugeridos item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto2.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";
             });
             //obtengo establecimiento check in
@@ -180,9 +182,8 @@ function MainViewModel() {
                 /*tLists+="<li><a href='#' id='"+id+"' class='item-link item-content'><div class='item-media'><img src='img/buskala_blank.png' alt='logo' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='"+imagen+"' width='80'></div><div class='item-media' style='margin-left:-80px'><img src='img/puesto3.png'  width='81'></div><div class='item-inner'><div class='item-title-row'><div class='item-title'>"+nombre+"</div></div><div class='item-text'>"+direccion+"</div><div class='item-subtitle'>"+tipo+"</div></div></a></li>";*/
             });
             //obtengo otros establecimientos
-            var contador = 0;
             $(establecimientootros).find("cliente").each(function () {
-                if(contador != 3)
+                if(contador < 5)
                 {
                     var id, nombre, direccion, tipo, urlcarpeta, imagen;
                     id = $(this).find("id_cliente").text();

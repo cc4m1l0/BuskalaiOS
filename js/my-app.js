@@ -189,10 +189,22 @@ myApp.onPageInit('configuracion', function (page) {
         mainView.router.back();
     });
 
+    $$('.link-info').on('click', function () {
+        mainView.router.loadPage('info.html');
+    });
+
     $$('.listapreferenciasc').on('click', function () {
         var preferenciausuario = jQuery(this).attr("id");
         window.localStorage.setItem('preferencia_usuario', preferenciausuario);
         mainView.router.loadPage('main.html');
+    });
+    
+});
+
+myApp.onPageInit('info', function (page) {
+    
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
     });
     
 });
