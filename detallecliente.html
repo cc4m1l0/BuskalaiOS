@@ -43,6 +43,11 @@
       <div style="display:block; float:left; width:70px; height:70px; margin-top:-15px; margin-right:0px; background:url(img/mujeres.png); background-repeat:no-repeat; background-size:63px;"><p id="promedio_mujeres" class="text-center" style="position:relative; font-size:20px; top:15px; margin-right:8px;">0%</p></div>
       <div style="display:block; float:left; width:70px; height:70px; margin-top:-15px; margin-right:0px; background:url(img/promedio_edad.png); background-repeat:no-repeat; background-size:63px;"><p id="promedio_edad" class="text-center" style="position:relative; font-size:20px; top:15px; margin-right:8px;">0</p></div>
       <div style="display:block; float:left; width:8%; height:70px; margin-top:-15px; margin-right:0px;"></div>
+      <input id="web_cliente" type="hidden" value="0" >
+      <input id="latitud_cliente" type="hidden" value="0" >
+      <input id="longitud_cliente" type="hidden" value="0" >
+      <input id="latitud_usuario" type="hidden" value="0" >
+      <input id="longitud_usuario" type="hidden" value="0" >
       <div id="descripcion_cliente" class="color-black" style="display:block; float:left; width:95%; margin-top:0px; margin-left:10px; margin-right:18px"></div>
       <div class="color-white" style="display:block; float:left; width:100%; margin-top:5px;"><video id="video_cliente" width="100%" height="auto" autoplay webkit-playsinline></video></div>
       <!--<iframe class="youtube-player" type="text/html" width="100%" height="385" src="http://www.youtube.com/embed/nc89MTivWDo" allowfullscreen frameborder="0">
@@ -55,6 +60,25 @@
       </div>
       <div class="content-block" style=" float:left; width:100%; margin-top:-35px;">
         <div id="horario_cliente" class="content-block-inner" style="width:100%"></div>
+      </div>
+    </div>
+    <div class="popup-overlay">
+      <div class="popup popup-felicitaciones-detalle" style="background: rgba(0,0,0,0.7);">
+        <div class="content-block" >
+          <p class="titulopremiacion">Felicitaciones! has conseguido</p>
+          <div class="circulorojo" style="margin-top:15px; width:150px; height:150px; background-size: 150px, 150px;" align="center"><p id="puntos_premiacion_detalle" class="puntospremiacion">0</p><p class="txtpuntospremiacion">puntos</p></div>
+          <p class="subtitulopremiacionsm">Vamos a compartirlo en Facebook y duplicar esos puntos</p>
+          <p><a href="#" class="compartir-felicitacion-detalle button button-fill" style=" background-color:#D52444">aceptar</a></p>
+          <p class="subtitulopremiacionsm"><a href="#" class="cerrar-felicitacion-detalle color-white">No, gracias</a></p>
+        </div>
+      </div>
+      <div class="popup popup-felicitacionesx2-detalle" style="background: rgba(0,0,0,0.7);">
+        <div class="content-block" >
+          <p class="titulopremiacion">Yuju! puntos x2</p>
+          <div class="circulorojo" style="margin-top:15px; width:150px; height:150px; background-size: 150px, 150px;" align="center"><p id="puntos_premiacionx2_detalle" class="puntospremiacion">0</p><p class="txtpuntospremiacion">puntos</p></div>
+          <p class="subtitulopremiacion">Continua consiguiendo puntos, es la mejor forma de disfrutar Buskala</p>
+          <p><a href="#" class="cerrar-felicitacionx2-detalle button button-fill" style=" background-color:#D52444">aceptar</a></p>
+        </div>
       </div>
     </div>
     </div>

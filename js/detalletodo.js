@@ -88,6 +88,11 @@ function DetalleViewModel(id) {
             document.getElementById('precios_cliente').innerHTML = "Precios: " + rango;
             document.getElementById('cover_cliente').innerHTML = "Cover: " + cover;
             document.getElementById('horario_cliente').innerHTML = "Horario: " + horario;
+            document.getElementById('web_cliente').value = web;
+            document.getElementById('latitud_cliente').value = latitudcliente;
+            document.getElementById('longitud_cliente').value = longitudcliente;
+            document.getElementById('latitud_usuario').value = latitud;
+            document.getElementById('longitud_usuario').value = longitud;
             
             var video = document.getElementById('video_cliente');
             if(idvideocliente != "sinvideo")
@@ -101,7 +106,7 @@ function DetalleViewModel(id) {
             //$("#input-id").rating({'value': '2'});
         },
         error: function (objeto, quepaso, otroobj) {
-            alert("Pasó lo siguiente: " + quepaso);
+            //alert("Pasó lo siguiente: " + quepaso);
         }
     });
 
@@ -130,7 +135,7 @@ function DetalleViewModel(id) {
             },
             error: function (objeto, quepaso, otroobj) {
                 video.setAttribute("hidden", true);
-                alert("Pasó lo siguiente: " + quepaso);
+                //alert("Pasó lo siguiente: " + quepaso);
             }
         });
     }
@@ -146,7 +151,7 @@ function DetalleViewModel(id) {
             $("#input-calificacion-detalle").rating();
         },
         error: function (objeto, quepaso, otroobj) {
-            alert("Pasó lo siguiente: " + quepaso);
+            //alert("Pasó lo siguiente: " + quepaso);
         }
     });
 
@@ -187,7 +192,29 @@ function DetalleViewModel(id) {
 
         },
         error: function (objeto, quepaso, otroobj) {
-            alert("Pasó lo siguiente: " + quepaso);
+            //alert("Pasó lo siguiente: " + quepaso);
         }
     });
+}
+
+//Funcion que devuelve la disntacia entre dos lat y lng (en mts)
+function calcDistancia(lat1, lon1, lat2, lon2) 
+{
+  var R = 6371; // km
+  var dLat = toRad(lat2-lat1);
+  var dLon = toRad(lon2-lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
+
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c;
+  var f = d * 1000;
+  return f;
+}
+// Converts numeric degrees to radians
+function toRad(Value) 
+{
+    return Value * Math.PI / 180;
 }
