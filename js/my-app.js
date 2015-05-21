@@ -130,9 +130,9 @@ myApp.onPageInit('preferencias', function (page) {
 });
 
 myApp.onPageInit('main', function (page) {
-    
-    MainViewModel();
 
+    MainViewModel();
+    //apppush.registerForPush();
 
     $$('#lista_sugeridos').on('click', '.listasugeridos' ,function () {
 
@@ -160,6 +160,14 @@ myApp.onPageInit('main', function (page) {
         }
         mainView.router.loadPage('configuracion.html');
     });
+
+    $$('.link-qr').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+        mainView.router.loadPage('checkqr.html');
+    });
 });
 
 myApp.onPageInit('detalle', function (page) {
@@ -186,13 +194,45 @@ myApp.onPageInit('detalle', function (page) {
     });
 
     $$('.link-video-button').on('click', function () {
-        removejscssfile("http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", "css") ////dynamically load and add this .css file
-        
         if(navigator.network.connection.type == Connection.NONE){
             navigator.notification.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', null ,'Sin internet','OK'); 
             return;
         }
-        alert("hola");
+        // capture callback
+        var captureSuccess = function(mediaFiles) {
+            var i, path, len;
+            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                uploadFile(mediaFiles[i]);
+                // do something interesting with the file
+            }
+        };
+
+        // capture error callback
+        var captureError = function(error) {
+            navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+        };
+
+        // start video capture
+        navigator.device.capture.captureVideo(captureSuccess, captureError, {duration:7});
+        
+        // Upload files to server
+        function uploadFile(mediaFile) {
+            var ft = new FileTransfer(),
+                path = mediaFile.fullPath,
+                name = mediaFile.name;
+
+            ft.upload(path,
+                "http://my.domain.com/upload.php",
+                function(result) {
+                    console.log('Upload success: ' + result.responseCode);
+                    console.log(result.bytesSent + ' bytes sent');
+                },
+                function(error) {
+                    console.log('Error uploading file ' + path + ': ' + error.code);
+                },
+                { fileName: name });
+        }
+
     });
 
     $$('.link-navegar-button').on('click', function () {
@@ -377,6 +417,50 @@ myApp.onPageInit('calificar', function (page) {
         mainView.router.back();
     });
     
+    
+});
+
+myApp.onPageInit('checkqr', function (page) {
+    
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+        //enviamos los puntos del usuario a la BD y registramos el Check in
+        var puntos = "12";
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var idusuario = window.localStorage.getItem('id_usuario');
+        var datastring = "tipo=nuevoregistrocliente&idcliente="+result.text+"&idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=2";
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+            success: function (result) {    
+                document.getElementById("puntos_premiacion_checkqr").innerHTML = puntos;
+                myApp.popup('.popup-felicitaciones-checkqr');
+            },
+            error: function (objeto, quepaso, otroobj) {
+                navigator.notification.alert('El código QR no coincide con nuestros establecimientos.', alertDismissed ,'Ups, problemas','OK'); 
+            }
+        });
+      }, 
+      function (error) {
+        navigator.notification.alert('No hemos podido acceder a tu cámara para realizar la lectura del código QR', alertDismissed ,'Ups, problemas al escanear','OK'); 
+        
+      }
+   );
+
+    // alert dialog dismissed
+    function alertDismissed() {
+        mainView.router.back();
+    }
+
+    $$('.cerrar-felicitaciones-checkqr').on('click', function () {
+        myApp.closeModal('.popup-felicitaciones-checkqr')
+        mainView.router.back();
+    });
     
 });
 
