@@ -224,11 +224,11 @@ myApp.onPageInit('detalle', function (page) {
             ft.upload(path,
                 "http://buskala.azurewebsites.net/admin/funciones/subir_video.php?idcliente="+idcliente,
                 function(result) {
-                    console.log('Upload success: ' + result.responseCode);
-                    console.log(result.bytesSent + ' bytes sent');
+
+                    navigator.notification.alert('Upload success: ' + result.responseCode + ' ' + result.bytesSent + ' bytes sent', null, 'Video Subido');
                 },
                 function(error) {
-                    console.log('Error uploading file ' + path + ': ' + error.code);
+                    navigator.notification.alert('Error uploading file ' + path + ': ' + error.code, null, 'Ups, Error');
                 },
                 { fileName: name });
         }
