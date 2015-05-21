@@ -222,7 +222,7 @@ myApp.onPageInit('detalle', function (page) {
                 name = mediaFile.name;
 
             ft.upload(path,
-                "http://my.domain.com/upload.php",
+                "http://buskala.azurewebsites.net/admin/funciones/subir_video.php?idcliente="+idcliente,
                 function(result) {
                     console.log('Upload success: ' + result.responseCode);
                     console.log(result.bytesSent + ' bytes sent');
