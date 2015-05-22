@@ -68,6 +68,7 @@ function MainViewModel() {
     }
     self.cargarLocal();
 
+    myApp.showPreloader('Cargando establecimientos...')
     //obtenemos la preferencia del usuario
     var preferenciausuario = window.localStorage.getItem('preferencia_usuario');
     //envio el query para obtener datos de los establecimientos
@@ -93,10 +94,12 @@ function MainViewModel() {
                 itemstodos.push(est);
             });
             $("#lista_todos").empty().append(tList);
+            myApp.hidePreloader();
             self.guardarLocal();
             self.cargarSugeridos();
         },
         error: function (objeto, quepaso, otroobj) {
+            myApp.hidePreloader();
             alert("Pasó lo siguiente: " + quepaso);
         }
     });

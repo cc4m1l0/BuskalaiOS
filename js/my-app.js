@@ -81,6 +81,7 @@ myApp.onPageInit('perfil', function (page) {
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
             return;
         }
+        myApp.showPreloader('Registrando tu perfil...');
         var now = new Date();
         var fechaactual = now.format("d/m/Y H:i");
         var datastring = "tipo=nuevousuario&idusuario=" + idusuario + "&nombre=" + nombreusuario + "&correo=" + emailusuario + "&fecha_registro=" + fechaactual + "&ubicacion=Medellin&latitud=&longitud=&sexo=" + generousuario + "&edad=0&imagen=" + imagenusuario;
@@ -105,9 +106,11 @@ myApp.onPageInit('perfil', function (page) {
                 window.localStorage.setItem('id_usuario', idusuario);
                 window.localStorage.setItem('nombre_usuario', nombreusuario);
                 window.localStorage.setItem('imagen_usuario', imagenusuario);
+                myApp.hidePreloader();
                 mainView.router.loadPage('preferencias.html');
             },
             error: function (objeto, quepaso, otroobj) {
+                myApp.hidePreloader();
                 alert("Pasó lo siguiente: " + quepaso);
             }
         });
@@ -199,41 +202,66 @@ myApp.onPageInit('detalle', function (page) {
             return;
         }
         // capture callback
-        var captureSuccess = function(mediaFiles) {
-            var i, path, len;
-            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                uploadFile(mediaFiles[i]);
-                // do something interesting with the file
-            }
+        var captureSuccess = function(mediaFiles) {    
+            myApp.showPreloader('Subiendo tu video...');
+            uploadFile(mediaFiles[0]);
         };
 
         // capture error callback
         var captureError = function(error) {
-            navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+            navigator.notification.alert('No ha sido posible acceder a grabar tu video', null, 'Error');
         };
 
         // start video capture
         navigator.device.capture.captureVideo(captureSuccess, captureError, {duration:7});
         
-        // Upload files to server
-        function uploadFile(mediaFile) {
-            var ft = new FileTransfer(),
-                path = mediaFile.fullPath,
-                name = mediaFile.name;
-
-            ft.upload(path,
-                "http://buskala.azurewebsites.net/admin/funciones/subir_video.php?idcliente="+idcliente,
-                function(result) {
-
-                    navigator.notification.alert('Upload success: ' + result.responseCode + ' ' + result.bytesSent + ' bytes sent', null, 'Video Subido');
-                },
-                function(error) {
-                    navigator.notification.alert('Error uploading file ' + path + ': ' + error.code, null, 'Ups, Error');
-                },
-                { fileName: name });
-        }
 
     });
+
+    // Upload files to server
+    function uploadFile(mediaFile) {
+        var puntos = "15";
+        var ft = new FileTransfer(),
+            path = mediaFile.fullPath,
+            name = mediaFile.name;
+        ft.onprogress = function(progressEvent) {
+            if (progressEvent.lengthComputable) {
+              loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
+            } else {
+              loadingStatus.increment();
+            }
+        };
+        ft.upload(path,
+            "http://buskala.azurewebsites.net/admin/funciones/subir_video.php?idcliente="+idcliente,
+            function(result) {
+                //enviamos los puntos del usuario a la BD y registramos el Check in
+                var puntos = "15";
+                var now = new Date();
+                var fechaactual = now.format("d/m/Y H:i");
+                var idusuario = window.localStorage.getItem('id_usuario');
+                var datastring = "tipo=nuevoregistrousuario&idcliente="+idcliente+"&idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=4";
+                $.ajax({
+                    type: "GET",
+                    url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+                    success: function (result) {        
+                        myApp.hidePreloader();
+                        document.getElementById("puntos_premiacionvideo_detalle").innerHTML = puntos;
+                        myApp.popup('.popup-felicitacionesvideo-detalle');
+                    },
+                    error: function (objeto, quepaso, otroobj) {     
+                        myApp.hidePreloader();
+                        navigator.notification.alert('En estos momentos tu publicación no se envió, intenta en un momento.', null ,'Ups, problemas','OK'); 
+                        return;
+                    }
+                });
+                //navigator.notification.alert('Upload success: ' + result.responseCode + ' ' + result.bytesSent + ' bytes sent', null, 'Video Subido');
+            },
+            function(error) {
+                myApp.hidePreloader();
+                navigator.notification.alert('Error al subir tu video ' + path + ': ' + error.code, null, 'Ups, Error');
+            },
+            { fileName: name });
+    }
 
     $$('.link-navegar-button').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
@@ -339,12 +367,80 @@ myApp.onPageInit('detalle', function (page) {
         function (response) { navigator.notification.alert('No se pudo realizar la publicación en Facebook.', null ,'Problemas al publicar','OK') });
     });
 
+    $$('.compartir-felicitacionvideo-detalle').on('click', function () {
+        myApp.closeModal('.popup-felicitacionesvideo-detalle')
+        //compartirmos el check in en facebook
+        var puntos = "30";
+        var idusuario = window.localStorage.getItem('id_usuario');
+        var nombreestablecimiento = document.getElementById('nombre_cliente').innerHTML;
+        var tipocliente = document.getElementById('tipo_cliente').innerHTML;
+        var direccioncliente = document.getElementById('direccion_cliente').innerHTML;
+        var linkcliente = document.getElementById('web_cliente').value;
+        var imagencliente = document.getElementById('imagen_clienteS').src;
+        var descripcioncliente = document.getElementById('descripcion_cliente').innerHTML;
+        var datastring = "idcliente="+idcliente;
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/admin/funciones/subir_youtube.php?"+datastring,
+            dataType: "text",
+            success: function (result) {    
+                var idvideo = result;
+                facebookConnectPlugin.showDialog( 
+                {
+                    method: "feed",
+                    picture:imagencliente,
+                    name:'Mira el video que subí desde ' + nombreestablecimiento + '. '+ tipocliente,
+                    link: 'https://www.youtube.com/watch?v=' + idvideo,    
+                    caption: 'Aqui nos vemos, ' + direccioncliente,
+                    description: descripcioncliente
+                }, 
+                function (response) 
+                {  
+                    var respuesta = response.post_id;
+                    if(typeof respuesta != 'undefined')
+                    {
+
+                        var now = new Date();
+                        var fechaactual = now.format("d/m/Y H:i");
+                        var datastring = "tipo=nuevoregistrousuario&idcliente="+idcliente+"&idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=7";
+                        $.ajax({
+                            type: "GET",
+                            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+                            success: function (result) {    
+                                document.getElementById("puntos_premiacionx2_detalle").innerHTML = puntos; 
+                                myApp.popup('.popup-felicitacionesx2-detalle'); 
+                            },
+                            error: function (objeto, quepaso, otroobj) {
+                                navigator.notification.alert('En estos momentos tu publicación no se envió, intenta en un momento.', null ,'Ups, problemas','OK'); 
+                                return;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        navigator.notification.alert('No se pudo realizar la publicación en Facebook.', null ,'Problemas al publicar','OK');
+                    }
+                    
+                },
+                function (response) { navigator.notification.alert('No se pudo realizar la publicación en Facebook.', null ,'Problemas al publicar','OK') });
+            },
+            error: function (objeto, quepaso, otroobj) {
+                navigator.notification.alert('En estos momentos tu video no se envió, intenta en un momento.', null ,'Ups, problemas','OK'); 
+                return;
+            }
+        });
+    });
+
     $$('.cerrar-felicitacionx2-detalle').on('click', function () {
         myApp.closeModal('.popup-felicitacionesx2-detalle')
     });
 
     $$('.cerrar-felicitacion-detalle').on('click', function () {
         myApp.closeModal('.popup-felicitaciones-detalle')
+    });
+
+    $$('.cerrar-felicitacionvideo-detalle').on('click', function () {
+        myApp.closeModal('.popup-felicitacionesvideo-detalle')
     });
 });
 

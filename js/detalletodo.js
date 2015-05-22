@@ -36,7 +36,8 @@ function removejscssfile(filename, filetype){
 }
 
 function DetalleViewModel(id) {
-
+   
+    myApp.showPreloader('Cargando datos del establecimiento...');
     var self = this;
     var idcliente = id;
     var listaestablecimientos = "";
@@ -93,7 +94,7 @@ function DetalleViewModel(id) {
             document.getElementById('longitud_cliente').value = longitudcliente;
             document.getElementById('latitud_usuario').value = latitud;
             document.getElementById('longitud_usuario').value = longitud;
-            
+            myApp.hidePreloader();
             var video = document.getElementById('video_cliente');
             if(idvideocliente != "sinvideo")
             {
@@ -106,6 +107,7 @@ function DetalleViewModel(id) {
             //$("#input-id").rating({'value': '2'});
         },
         error: function (objeto, quepaso, otroobj) {
+            myApp.hidePreloader();
             //alert("Pasó lo siguiente: " + quepaso);
         }
     });
