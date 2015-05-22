@@ -201,20 +201,37 @@ myApp.onPageInit('detalle', function (page) {
             navigator.notification.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', null ,'Sin internet','OK'); 
             return;
         }
-        // capture callback
-        var captureSuccess = function(mediaFiles) {    
-            myApp.showPreloader('Subiendo tu video...');
-            uploadFile(mediaFiles[0]);
-        };
+        var latu= document.getElementById("latitud_usuario").value;
+        var lngu= document.getElementById("longitud_usuario").value;
+        var latc= document.getElementById("latitud_cliente").value;
+        var lngc= document.getElementById("longitud_cliente").value;
+        if(latu == "0" || lngu == "0" )
+        {
+            navigator.notification.alert('En estos momentos no se obtuvo tu ubicación.', null ,'Problemas con tu ubicación','OK'); 
+            return;
+        }
+        var distancia = calcDistancia(latu,lngu,latc,lngc);
+        if(distancia <= 100)
+        {
+            // capture callback
+            var captureSuccess = function(mediaFiles) {    
+                myApp.showPreloader('Subiendo tu video...');
+                uploadFile(mediaFiles[0]);
+            };
 
-        // capture error callback
-        var captureError = function(error) {
-            navigator.notification.alert('No ha sido posible acceder a grabar tu video', null, 'Error');
-        };
+            // capture error callback
+            var captureError = function(error) {
+                navigator.notification.alert('No ha sido posible acceder a grabar tu video', null, 'Error');
+            };
 
-        // start video capture
-        navigator.device.capture.captureVideo(captureSuccess, captureError, {duration:7});
-        
+            // start video capture
+            navigator.device.capture.captureVideo(captureSuccess, captureError, {duration:7});
+        }
+        else
+        {
+            navigator.notification.alert('Es necesario estar dentro del establecimiento para realizar esta acción.', null ,'Fuera del establecimiento','OK'); 
+            return;
+        }
 
     });
 
