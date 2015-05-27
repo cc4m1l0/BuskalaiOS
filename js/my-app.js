@@ -81,10 +81,34 @@ myApp.onPageInit('perfil', function (page) {
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
             return;
         }
+        var anionacimiento = document.getElementById("anionacimiento").value;
+        if(anionacimiento == parseInt(anionacimiento))
+        {
+            var fechaactual = new Date();
+            var anioactual = fechaactual.getFullYear();
+            edadusuario = anioactual - anionacimiento;
+            if (edadusuario < 18)
+            {
+                myApp.alert('Debes ser mayor de edad para ingresar a Buskala. Ej (1991)', 'Menor de edad'); 
+                return;
+            }
+            if (edadusuario > 90)
+            {
+                myApp.alert('¿Seguro tienes esta edad?. Te falta poco para alcanzar a Matusalem, por favor intenta con otra fecha.', 'Conflicto de edad'); 
+                return;
+            }
+
+        }
+        else
+        {
+            myApp.alert('Por favor ingresa un año de nacimiento correcto e intenta nuevamente. Ej (1991)', 'Edad incorrecta'); 
+            return;
+        }
+
         myApp.showPreloader('Registrando tu perfil...');
         var now = new Date();
         var fechaactual = now.format("d/m/Y H:i");
-        var datastring = "tipo=nuevousuario&idusuario=" + idusuario + "&nombre=" + nombreusuario + "&correo=" + emailusuario + "&fecha_registro=" + fechaactual + "&ubicacion=Medellin&latitud=&longitud=&sexo=" + generousuario + "&edad=0&imagen=" + imagenusuario;
+        var datastring = "tipo=nuevousuario&idusuario=" + idusuario + "&nombre=" + nombreusuario + "&correo=" + emailusuario + "&fecha_registro=" + fechaactual + "&ubicacion=Medellin&latitud=&longitud=&sexo=" + generousuario + "&edad=" + edadusuario + "&imagen=" + imagenusuario;
         var parametros = {
             "tipo": "nuevousuario",
             "idusuario": idusuario,
@@ -213,14 +237,15 @@ myApp.onPageInit('detalle', function (page) {
         var distancia = calcDistancia(latu,lngu,latc,lngc);
         if(distancia <= 100)
         {
+            myApp.showPreloader('Subiendo tu video...');
             // capture callback
             var captureSuccess = function(mediaFiles) {    
-                myApp.showPreloader('Subiendo tu video...');
                 uploadFile(mediaFiles[0]);
             };
 
             // capture error callback
-            var captureError = function(error) {
+            var captureError = function(error) {    
+                myApp.hidePreloader();
                 navigator.notification.alert('No ha sido posible acceder a grabar tu video', null, 'Error');
             };
 
@@ -541,23 +566,30 @@ myApp.onPageInit('checkqr', function (page) {
 
     cordova.plugins.barcodeScanner.scan(
       function (result) {
-        //enviamos los puntos del usuario a la BD y registramos el Check in
-        var puntos = "12";
-        var now = new Date();
-        var fechaactual = now.format("d/m/Y H:i");
-        var idusuario = window.localStorage.getItem('id_usuario');
-        var datastring = "tipo=nuevoregistrocliente&idcliente="+result.text+"&idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=2";
-        $.ajax({
-            type: "GET",
-            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
-            success: function (result) {    
-                document.getElementById("puntos_premiacion_checkqr").innerHTML = puntos;
-                myApp.popup('.popup-felicitaciones-checkqr');
-            },
-            error: function (objeto, quepaso, otroobj) {
-                navigator.notification.alert('El código QR no coincide con nuestros establecimientos.', alertDismissed ,'Ups, problemas','OK'); 
-            }
-        });
+        if (result.text != "")
+        {
+            //enviamos los puntos del usuario a la BD y registramos el Check in
+            var puntos = "12";
+            var now = new Date();
+            var fechaactual = now.format("d/m/Y H:i");
+            var idusuario = window.localStorage.getItem('id_usuario');
+            var datastring = "tipo=nuevoregistrocliente&idcliente="+result.text+"&idusuario=" + idusuario + "&fecha_registro=" + fechaactual + "&puntos="+ puntos +"&tipo_registro=2";
+            $.ajax({
+                type: "GET",
+                url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+                success: function (result) {    
+                    document.getElementById("puntos_premiacion_checkqr").innerHTML = puntos;
+                    myApp.popup('.popup-felicitaciones-checkqr');
+                },
+                error: function (objeto, quepaso, otroobj) {
+                    navigator.notification.alert('El código QR no coincide con nuestros establecimientos.', alertDismissed ,'Ups, problemas','OK'); 
+                }
+            });
+        }
+        else
+        {
+            mainView.router.back();
+        }
       }, 
       function (error) {
         navigator.notification.alert('No hemos podido acceder a tu cámara para realizar la lectura del código QR', alertDismissed ,'Ups, problemas al escanear','OK'); 
