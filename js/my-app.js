@@ -38,6 +38,16 @@ myApp.onPageInit('registro', function (page) {
 		},
 		function (response) { myApp.alert('Has cancelado tu registro.', 'Sin registro') });
     });
+
+
+    $$('.registro-buskala').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+        mainView.router.loadPage('registrobuskala.html');
+    });
+
 });
 
 myApp.onPageInit('perfil', function (page) {
@@ -130,6 +140,147 @@ myApp.onPageInit('perfil', function (page) {
                 window.localStorage.setItem('id_usuario', idusuario);
                 window.localStorage.setItem('nombre_usuario', nombreusuario);
                 window.localStorage.setItem('imagen_usuario', imagenusuario);
+                myApp.hidePreloader();
+                mainView.router.loadPage('preferencias.html');
+            },
+            error: function (objeto, quepaso, otroobj) {
+                myApp.hidePreloader();
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+    });
+});
+
+myApp.onPageInit('login', function (page) {
+
+    var nombreusuario = "";
+    var lcvusuario = "";
+
+    $$('.loginb-app').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+
+        emailusuario = document.getElementById("emailusuario").value;
+        if(emailusuario == ""){
+            myApp.alert('Por favor ingresa tu correo electrónico .', 'Datos incorrectos'); 
+            return;
+        }
+        lcvusuario = document.getElementById("lcvusuario").value;
+        if(lcvusuario == ""){
+            myApp.alert('Por favor ingresa una clave.', 'Faltan datos'); 
+            return;
+        }
+
+        myApp.showPreloader('Validando tus datos...');
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var datastring = "tipo=validarusuariob&correo=" + emailusuario + "&lcv=" + lcvusuario;
+        
+        //envio el query para guardar el nuevo usuario en la BD
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/ListarBD.php?"+datastring,
+            success: function (result) {        
+                window.localStorage.setItem('id_usuario', idusuario);
+                window.localStorage.setItem('nombre_usuario', nombreusuario);
+                window.localStorage.setItem('imagen_usuario', "");
+                myApp.hidePreloader();
+                mainView.router.loadPage('preferencias.html');
+            },
+            error: function (objeto, quepaso, otroobj) {
+                myApp.hidePreloader();
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+    });
+});
+
+myApp.onPageInit('registrobuskala', function (page) {
+
+    var idusuario = "";
+    var cumpleusuario = "";
+    var nombreusuario = "";
+    var emailusuario = "";
+    var generousuario = "";
+    var edadusuario = "";
+    var lcvusuario = "";
+    var lcvusuariore = "";
+
+    var date = new Date();
+    var components = [date.getYear(),date.getMonth(),date.getDate(),date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
+
+    $$('.registrob-app').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+
+        idusuario = components.join("");
+        nombreusuario = document.getElementById("nombrecomleto").value;
+        if(nombreusuario == ""){
+            myApp.alert('Por favor ingresa tu nombre completo.', 'Datos incorrectos'); 
+            return;
+        }
+        emailusuario = document.getElementById("emailusuario").value;
+        if(emailusuario == ""){
+            myApp.alert('Por favor ingresa tu correo electrónico .', 'Datos incorrectos'); 
+            return;
+        }
+        lcvusuario = document.getElementById("lcvusuario").value;
+        if(lcvusuario == ""){
+            myApp.alert('Por favor ingresa una clave.', 'Faltan datos'); 
+            return;
+        }
+        lcvusuariore = document.getElementById("lcvusuariore").value;
+        if(lcvusuariore == ""){
+            myApp.alert('Por favor vuelve a ingresar la clave.', 'Faltan datos'); 
+            return;
+        }
+        if(lcvusuario != lcvusuariore){
+            myApp.alert('Las claves ingresadas no coinciden.', 'Datos incorrectos'); 
+            return;
+        }
+        generousuario = document.getElementById("generousuario").value;
+
+        var anionacimiento = document.getElementById("anionacimiento").value;
+        if(anionacimiento == parseInt(anionacimiento))
+        {
+            var fechaactual = new Date();
+            var anioactual = fechaactual.getFullYear();
+            edadusuario = anioactual - anionacimiento;
+            if (edadusuario < 18)
+            {
+                myApp.alert('Debes ser mayor de edad para ingresar a Buskala. Ej (1991)', 'Menor de edad'); 
+                return;
+            }
+            if (edadusuario > 90)
+            {
+                myApp.alert('¿Seguro tienes esta edad?. Te falta poco para alcanzar a Matusalem, por favor intenta con otra fecha.', 'Conflicto de edad'); 
+                return;
+            }
+
+        }
+        else
+        {
+            myApp.alert('Por favor ingresa un año de nacimiento correcto e intenta nuevamente. Ej (1991)', 'Edad incorrecta'); 
+            return;
+        }
+
+        myApp.showPreloader('Registrando tu perfil...');
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var datastring = "tipo=nuevousuariolocal&idusuario=" + idusuario + "&nombre=" + nombreusuario + "&correo=" + emailusuario + "&fecha_registro=" + fechaactual + "&ubicacion=Medellin&latitud=&longitud=&sexo=" + generousuario + "&edad=" + edadusuario + "&lcv=" + lcvusuario;
+        
+        //envio el query para guardar el nuevo usuario en la BD
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/InsertarBD.php?"+datastring,
+            success: function (result) {        
+                window.localStorage.setItem('id_usuario', idusuario);
+                window.localStorage.setItem('nombre_usuario', nombreusuario);
+                window.localStorage.setItem('imagen_usuario', "");
                 myApp.hidePreloader();
                 mainView.router.loadPage('preferencias.html');
             },
@@ -329,6 +480,7 @@ myApp.onPageInit('detalle', function (page) {
             navigator.notification.alert('En estos momentos no se obtuvo tu ubicación.', null ,'Problemas con tu ubicación','OK'); 
             return;
         }
+        //alert(latu+","+lngu+","+latc+","+lngc)
         var distancia = calcDistancia(latu,lngu,latc,lngc);
         if(distancia <= 100)
         {
