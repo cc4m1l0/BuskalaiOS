@@ -45,6 +45,14 @@ myApp.onPageInit('registro', function (page) {
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
             return;
         }
+        mainView.router.loadPage('login.html');
+    });
+
+    $$('.registrarse-app').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
         mainView.router.loadPage('registrobuskala.html');
     });
 
@@ -156,6 +164,10 @@ myApp.onPageInit('login', function (page) {
     var nombreusuario = "";
     var lcvusuario = "";
 
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
     $$('.loginb-app').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
@@ -164,7 +176,7 @@ myApp.onPageInit('login', function (page) {
 
         emailusuario = document.getElementById("emailusuario").value;
         if(emailusuario == ""){
-            myApp.alert('Por favor ingresa tu correo electrónico .', 'Datos incorrectos'); 
+            myApp.alert('Por favor ingresa tu correo electrónico .', 'Faltan datos'); 
             return;
         }
         lcvusuario = document.getElementById("lcvusuario").value;
@@ -183,11 +195,21 @@ myApp.onPageInit('login', function (page) {
             type: "GET",
             url: "http://buskala.azurewebsites.net/querys/ListarBD.php?"+datastring,
             success: function (result) {        
-                window.localStorage.setItem('id_usuario', idusuario);
-                window.localStorage.setItem('nombre_usuario', nombreusuario);
-                window.localStorage.setItem('imagen_usuario', "");
-                myApp.hidePreloader();
-                mainView.router.loadPage('preferencias.html');
+                if (result == 'noencontrado')
+                {
+                    myApp.hidePreloader();
+                    myApp.alert('Los datos ingresados no coinciden con nuestros registros, por favor verifica que sean correctos.', 'Datos incorrectos'); 
+                    return;
+                }
+                else
+                {
+                    var res = result.split('::');
+                    window.localStorage.setItem('id_usuario', res[0]);
+                    window.localStorage.setItem('nombre_usuario', res[1]);
+                    window.localStorage.setItem('imagen_usuario', "");
+                    myApp.hidePreloader();
+                    mainView.router.loadPage('preferencias.html');
+                }
             },
             error: function (objeto, quepaso, otroobj) {
                 myApp.hidePreloader();
@@ -195,6 +217,64 @@ myApp.onPageInit('login', function (page) {
             }
         });
     });
+
+    $$('.olvideclave-app').on('click', function () {
+        mainView.router.loadPage('recuperarclave.html');
+    });
+
+});
+
+myApp.onPageInit('recuperarclave', function (page) {
+
+    var nombreusuario = "";
+    var lcvusuario = "";
+
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
+    $$('.recuperarclv-app').on('click', function () {
+        if(navigator.network.connection.type == Connection.NONE){
+            myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
+            return;
+        }
+
+        emailusuario = document.getElementById("emailusuario").value;
+        if(emailusuario == ""){
+            myApp.alert('Por favor ingresa tu correo electrónico .', 'Faltan datos'); 
+            return;
+        }
+
+        myApp.showPreloader('Validando tus datos...');
+        var now = new Date();
+        var fechaactual = now.format("d/m/Y H:i");
+        var datastring = "tipo=recuperarclave&correo=" + emailusuario;
+        
+        //envio el query para guardar el nuevo usuario en la BD
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/ListarBD.php?"+datastring,
+            success: function (result) {        
+                if (result == 'noexiste')
+                {
+                    myApp.hidePreloader();
+                    myApp.alert('El correo ingresado no coincide con nuestros registros, por favor verifica que sea correcto.', 'Dato incorrecto'); 
+                    return;
+                }
+                else
+                {
+                    myApp.alert('Hemos enviado los datos de tu cuenta al correo proporcinado. Gracias.', 'Correo enviado'); 
+                    myApp.hidePreloader();
+                    mainView.router.back();
+                }
+            },
+            error: function (objeto, quepaso, otroobj) {
+                myApp.hidePreloader();
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+    });
+
 });
 
 myApp.onPageInit('registrobuskala', function (page) {
@@ -211,6 +291,10 @@ myApp.onPageInit('registrobuskala', function (page) {
     var date = new Date();
     var components = [date.getYear(),date.getMonth(),date.getDate(),date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
 
+    $$('.link-back-button').on('click', function () {
+        mainView.router.back();
+    });
+
     $$('.registrob-app').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
@@ -220,12 +304,12 @@ myApp.onPageInit('registrobuskala', function (page) {
         idusuario = components.join("");
         nombreusuario = document.getElementById("nombrecomleto").value;
         if(nombreusuario == ""){
-            myApp.alert('Por favor ingresa tu nombre completo.', 'Datos incorrectos'); 
+            myApp.alert('Por favor ingresa tu nombre completo.', 'Faltan datos'); 
             return;
         }
         emailusuario = document.getElementById("emailusuario").value;
         if(emailusuario == ""){
-            myApp.alert('Por favor ingresa tu correo electrónico .', 'Datos incorrectos'); 
+            myApp.alert('Por favor ingresa tu correo electrónico .', 'Faltan datos'); 
             return;
         }
         lcvusuario = document.getElementById("lcvusuario").value;
@@ -290,6 +374,11 @@ myApp.onPageInit('registrobuskala', function (page) {
             }
         });
     });
+
+    $$('.olvideclave-app').on('click', function () {
+        mainView.router.loadPage('recuperarclave.html');
+    });
+
 });
 
 myApp.onPageInit('preferencias', function (page) {

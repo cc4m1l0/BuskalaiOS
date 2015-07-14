@@ -1,9 +1,15 @@
 function ConfigViewModel()
 {
 	//ponemos la imagen del usuario y su nombre
-	var imagen = localStorage.getItem("imagen_usuario");
-	imagen = imagen.replace("width=200", "width=150");
-	document.getElementById("imgusuario").style.background = "url(" + imagen + ") center no-repeat";
+    if (localStorage.getItem("username") != null)
+    {
+        var imagen = localStorage.getItem("imagen_usuario");
+        if (imagen != "")
+        {
+            imagen = imagen.replace("width=200", "width=150");
+            document.getElementById("imgusuario").style.background = "url(" + imagen + ") center no-repeat";  
+        } 
+    }
     document.getElementById("nombreusuario").innerHTML = "<p>" + localStorage.getItem("nombre_usuario") + "</p>";
     //cargamos los puntos del usuario
     if (localStorage.getItem("puntos_usuario") !== null )
