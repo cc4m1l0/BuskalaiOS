@@ -329,27 +329,30 @@ myApp.onPageInit('registrobuskala', function (page) {
         generousuario = document.getElementById("generousuario").value;
 
         var anionacimiento = document.getElementById("anionacimiento").value;
-        if(anionacimiento == parseInt(anionacimiento))
+        if (anionacimiento != "")
         {
-            var fechaactual = new Date();
-            var anioactual = fechaactual.getFullYear();
-            edadusuario = anioactual - anionacimiento;
-            if (edadusuario < 18)
+            if(anionacimiento == parseInt(anionacimiento))
             {
-                myApp.alert('Debes ser mayor de edad para ingresar a Buskala. Ej (1991)', 'Menor de edad'); 
-                return;
-            }
-            if (edadusuario > 90)
-            {
-                myApp.alert('¿Seguro tienes esta edad?. Te falta poco para alcanzar a Matusalem, por favor intenta con otra fecha.', 'Conflicto de edad'); 
-                return;
-            }
+                var fechaactual = new Date();
+                var anioactual = fechaactual.getFullYear();
+                edadusuario = anioactual - anionacimiento;
+                if (edadusuario < 18)
+                {
+                    myApp.alert('Debes ser mayor de edad para ingresar a Buskala. Ej (1991)', 'Menor de edad'); 
+                    return;
+                }
+                if (edadusuario > 90)
+                {
+                    myApp.alert('¿Seguro tienes esta edad?. Te falta poco para alcanzar a Matusalem, por favor intenta con otra fecha.', 'Conflicto de edad'); 
+                    return;
+                }
 
-        }
-        else
-        {
-            myApp.alert('Por favor ingresa un año de nacimiento correcto e intenta nuevamente. Ej (1991)', 'Edad incorrecta'); 
-            return;
+            }
+            else
+            {
+                myApp.alert('Por favor ingresa un año de nacimiento correcto e intenta nuevamente. Ej (1991)', 'Edad incorrecta'); 
+                return;
+            }
         }
 
         myApp.showPreloader('Registrando tu perfil...');
@@ -866,6 +869,12 @@ myApp.onPageInit('configuracion', function (page) {
         var preferenciausuario = jQuery(this).attr("id");
         window.localStorage.setItem('preferencia_usuario', preferenciausuario);
         mainView.router.loadPage('main.html');
+    });
+
+    $$('.cerrarsesion').on('click', function () {
+
+        window.localStorage.clear();
+        mainView.router.loadPage('registro.html');
     });
     
 });
