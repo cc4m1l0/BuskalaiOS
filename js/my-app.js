@@ -48,12 +48,15 @@ myApp.onPageInit('registro', function (page) {
         mainView.router.loadPage('login.html');
     });
 
-    $$('.registrarse-app').on('click', function () {
+    $$('.sinregistro-app').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
             return;
         }
-        mainView.router.loadPage('registrobuskala.html');
+        window.localStorage.setItem('id_usuario', "sinregistro");
+        window.localStorage.setItem('nombre_usuario', "invitado");
+        window.localStorage.setItem('imagen_usuario', "");
+        mainView.router.loadPage('preferencias.html');
     });
 
 });
@@ -220,6 +223,10 @@ myApp.onPageInit('login', function (page) {
 
     $$('.olvideclave-app').on('click', function () {
         mainView.router.loadPage('recuperarclave.html');
+    });
+
+    $$('.registrarme-app').on('click', function () {
+        mainView.router.loadPage('registrobuskala.html');
     });
 
 });

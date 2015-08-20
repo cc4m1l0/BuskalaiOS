@@ -34,8 +34,8 @@ function ConfigViewModel()
     });
     //cargamos las prefernecias para dar la opcion al usuario de cambiarla
 	var tList = '';
-	var ids = ["crossover", "electronica", "rock", "tropical", "urban"];
-	var imgs = ["img/crossover.png","img/electronica.png","img/rock.png","img/tropical.png","img/urban.png"];
+	var ids = ["crossover", "electronica", "rock", "tropical", "urban", "plancha"];
+	var imgs = ["img/crossover.png","img/electronica.png","img/rock.png","img/tropical.png","img/urban.png", "img/plancha.png"];
 	for(var i=0; i<ids.length; i++)
 	{
 		tList += "<li style='width: 100%; height: fit-content;'><a href='#' id='"+ids[i]+"' class='listapreferenciasc item-link item-content'><div class='item-inner' style='width: 100%; height: fit-content;'><img src='"+imgs[i]+"' alt='logo' style='max-width: 100%; max-height: 100%; height: auto;' ></div></a></li>";
