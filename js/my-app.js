@@ -443,6 +443,10 @@ myApp.onPageInit('main', function (page) {
             myApp.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', 'Sin internet'); 
             return;
         }
+        if (localStorage.getItem("id_usuario") == "sinregistro"){
+            myApp.alert('Debes registrarte en Buskala para poder realizar esta acción y acumular puntos', 'Usuario invitado'); 
+            return;
+        }
         mainView.router.loadPage('checkqr.html');
     });
 });
@@ -467,12 +471,20 @@ myApp.onPageInit('detalle', function (page) {
             navigator.notification.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', null ,'Sin internet','OK'); 
             return;
         }
+        if (localStorage.getItem("id_usuario") == "sinregistro"){
+            navigator.notification.alert('Debes registrarte en Buskala para poder realizar esta acción y acumular puntos', null, 'Usuario invitado', 'OK'); 
+            return;
+        }
         mainView.router.loadPage('calificar.html?id='+idcliente);
     });
 
     $$('.link-video-button').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
             navigator.notification.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', null ,'Sin internet','OK'); 
+            return;
+        }
+        if (localStorage.getItem("id_usuario") == "sinregistro"){
+            navigator.notification.alert('Debes registrarte en Buskala para poder realizar esta acción y acumular puntos', null, 'Usuario invitado', 'OK'); 
             return;
         }
         var latu= document.getElementById("latitud_usuario").value;
@@ -568,6 +580,10 @@ myApp.onPageInit('detalle', function (page) {
     $$('.link-check-button').on('click', function () {
         if(navigator.network.connection.type == Connection.NONE){
             navigator.notification.alert('Es necesaria una conexión a internet para realizar esta función. Por favor conéctate e intenta nuevamente.', null ,'Sin internet','OK'); 
+            return;
+        }
+        if (localStorage.getItem("id_usuario") == "sinregistro"){
+            navigator.notification.alert('Debes registrarte en Buskala para poder realizar esta acción y acumular puntos', null, 'Usuario invitado', 'OK'); 
             return;
         }
         var latu= document.getElementById("latitud_usuario").value;
@@ -884,6 +900,11 @@ myApp.onPageInit('configuracion', function (page) {
         mainView.router.loadPage('registro.html');
     });
     
+    $$('.iniciarsesion').on('click', function () {
+
+        window.localStorage.clear();
+        mainView.router.loadPage('registro.html');
+    });
 });
 
 myApp.onPageInit('info', function (page) {

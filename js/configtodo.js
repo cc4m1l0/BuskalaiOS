@@ -1,5 +1,15 @@
 function ConfigViewModel()
 {
+    //comprobamos si es usuario invitado o con registro
+    if (localStorage.getItem("id_usuario") != null)
+    {
+        if (localStorage.getItem("id_usuario") == "sinregistro")
+        {
+            document.getElementById("puntosusuario").style.display = 'none';
+            document.getElementById("opcionesusuario").style.display = 'none';
+            document.getElementById("opcionesnousuario").style.display = 'block';
+        }
+    }
 	//ponemos la imagen del usuario y su nombre
     if (localStorage.getItem("username") != null)
     {
@@ -18,20 +28,23 @@ function ConfigViewModel()
     }
     //obtenemos el id del usuario
     var idusuario = localStorage.getItem('id_usuario');
-    //envio el query para obtener los puntos del usuario
-    $.ajax({
-        type: "GET",
-        url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=totalpuntosusuario&idusuario=" + idusuario,
-        dataType: "text",
-        success: function (result) {
-        	var resultado = result;
-            document.getElementById('totalpuntos').innerHTML = resultado;
-            localStorage.setItem('puntos_usuario', resultado);
-        },
-        error: function (objeto, quepaso, otroobj) {
-            alert("Pasó lo siguiente: " + quepaso);
-        }
-    });
+    //envio el query para obtener los puntos del usuario si esta registrado
+    if(idusuario != "sinregistro") 
+    {
+        $.ajax({
+            type: "GET",
+            url: "http://buskala.azurewebsites.net/querys/ListarBD.php?tipo=totalpuntosusuario&idusuario=" + idusuario,
+            dataType: "text",
+            success: function (result) {
+            	var resultado = result;
+                document.getElementById('totalpuntos').innerHTML = resultado;
+                localStorage.setItem('puntos_usuario', resultado);
+            },
+            error: function (objeto, quepaso, otroobj) {
+                alert("Pasó lo siguiente: " + quepaso);
+            }
+        });
+    }
     //cargamos las prefernecias para dar la opcion al usuario de cambiarla
 	var tList = '';
 	var ids = ["crossover", "electronica", "rock", "tropical", "urban", "plancha"];
